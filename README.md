@@ -39,9 +39,10 @@ How to build
 ------------
 
 The project relies on the following libraries:
-- QT
-- ALSA
-- pthread
+- CMake (cmake) 
+- QT4 (libqt4-dev) 
+- ALSA (libasound2-dev)
+- pthread (usually standard)
 - RtMidi (bundled with the project)
 
 which should allow easy compilation for most distributions. You may need to install ALSA and QT development
