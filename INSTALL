@@ -1,0 +1,30 @@
+
+Building depends on the CMake toolset, which you might need to install. 
+You will also need the development packages for these libraries:
+
+- QT
+- ALSA
+- pthread
+
+To build and install the project, from this directory, follow these steps in a terminal:
+
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr
+  make
+
+You can choose another install prefix, but this one is recommended for correct setup of
+menu entry and man page.
+
+Then, as root:
+
+  make install
+
+To uninstall, as root:
+
+  make uninstall
+
+Once installed, run the application from your "Audio/Multimedia" menu, or directly, by calling:
+
+  px5deditor
+
