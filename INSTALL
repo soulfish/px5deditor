@@ -1,9 +1,9 @@
-
 Building depends on the CMake toolset, which you might need to install. 
-You will also need the development packages for these libraries:
+You will also need the development packages for these libraries and packages:
 
-- QT
-- ALSA
+- CMake
+- QT4 (libqt4-dev)
+- ALSA (libasound2-dev)
 - pthread
 
 To build and install the project, from this directory, follow these steps in a terminal:
