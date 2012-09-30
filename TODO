@@ -1,0 +1,29 @@
+
+Main features missing (implemented soon):
+------------------------------------------
+
+* View & Dump of all presets in the unit. This is the most important feature
+that shall be added to the next version. Currently the editor only shows the
+current preset, allows to switch preset, but we have no global view of all the 
+presets.
+
+* Load & Save. Saving is implemented only on the current preset slot on the
+unit. Being able to save to a different slot will be implemented next, as well
+as saving and loading to two file formats: "Windows editor compatible" binary
+format, and "Custom XML" format, which will be more open and allow to be
+easily read by other tools.
+
+* Drum machine. The PX5D has a really cool drum machine, and the drum machine
+editor will be implemented soon.
+
+* Separate building of lib and GUI.
+
+* Use CPack to allow easy building of DEB and RPM packages.
+
+* Further enhancements may be cool to have, especially features not available
+on the Windows editor like changing preset number via a standard MIDI Program
+Change command, linking MIDI controllers to some effect parameters, including
+a tempo/delay time calculator, using the MIDI bass instrument of the PX5D to
+output an audio tuner/reference, ... any ideas welcome!
+
+Frédéric Jaume <dev@exp-media.com>
