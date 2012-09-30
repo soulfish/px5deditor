@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/px5de">
+        <file>data/px5d_64x64.png</file>
+        <file>data/px5d_128x128.png</file>
+    </qresource>
+</RCC>
