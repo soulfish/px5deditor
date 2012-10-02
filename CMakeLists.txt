@@ -36,6 +36,7 @@ set (VERSION_PATCH "0")
 set (VERSION_SUFFIX "alpha")
 set (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 add_definitions (-DVERSION=${VERSION})
+add_definitions (-D__LINUX_ALSA__)
 
 message (STATUS "Korg Pandora PX5d editor for Linux ${VERSION}
     install prefix: ${CMAKE_INSTALL_PREFIX}")
