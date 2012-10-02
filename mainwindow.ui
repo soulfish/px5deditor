@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>671</width>
-    <height>711</height>
+    <width>859</width>
+    <height>525</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
    <widget class="QPushButton" name="connectToPandora">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>560</x>
       <y>30</y>
       <width>101</width>
       <height>41</height>
@@ -43,7 +43,7 @@
    <widget class="QLabel" name="px5dStatus_Label">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>680</x>
       <y>10</y>
       <width>91</width>
       <height>16</height>
@@ -59,7 +59,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>680</x>
       <y>30</y>
       <width>171</width>
       <height>24</height>
@@ -83,7 +83,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>680</x>
       <y>60</y>
       <width>171</width>
       <height>24</height>
@@ -131,7 +131,7 @@
     <widget class="QCheckBox" name="dynamicsOn">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>110</x>
        <y>10</y>
        <width>41</width>
        <height>20</height>
@@ -256,7 +256,7 @@
     <widget class="QCheckBox" name="amplifierOn">
      <property name="geometry">
       <rect>
-       <x>420</x>
+       <x>410</x>
        <y>10</y>
        <width>40</width>
        <height>20</height>
@@ -695,7 +695,7 @@
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>20</x>
       <y>280</y>
       <width>171</width>
       <height>181</height>
@@ -707,7 +707,7 @@
     <widget class="QCheckBox" name="modulationOn">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>100</x>
        <y>10</y>
        <width>41</width>
        <height>20</height>
@@ -814,7 +814,7 @@
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>200</x>
       <y>280</y>
       <width>281</width>
       <height>181</height>
@@ -826,7 +826,7 @@
     <widget class="QCheckBox" name="delayOn">
      <property name="geometry">
       <rect>
-       <x>240</x>
+       <x>230</x>
        <y>10</y>
        <width>41</width>
        <height>20</height>
@@ -1016,9 +1016,9 @@
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>280</y>
-      <width>161</width>
+      <x>660</x>
+      <y>90</y>
+      <width>171</width>
       <height>181</height>
      </rect>
     </property>
@@ -1135,8 +1135,8 @@
    <widget class="QGroupBox" name="groupBox_6">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>470</y>
+      <x>490</x>
+      <y>280</y>
       <width>161</width>
       <height>181</height>
      </rect>
@@ -1147,7 +1147,7 @@
     <widget class="QCheckBox" name="reverbOn">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>110</x>
        <y>10</y>
        <width>41</width>
        <height>20</height>
@@ -1254,8 +1254,8 @@
    <widget class="QGroupBox" name="groupBox_7">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>470</y>
+      <x>660</x>
+      <y>280</y>
       <width>171</width>
       <height>181</height>
      </rect>
@@ -1349,7 +1349,7 @@
     <widget class="QCheckBox" name="noiseReductionOn">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>120</x>
        <y>10</y>
        <width>41</width>
        <height>20</height>
@@ -1365,21 +1365,24 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>241</width>
+      <width>171</width>
       <height>71</height>
      </rect>
     </property>
     <widget class="QRadioButton" name="programBankUser">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>0</y>
-       <width>51</width>
+       <x>0</x>
+       <y>40</y>
+       <width>91</width>
        <height>20</height>
       </rect>
      </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
      <property name="text">
-      <string>User</string>
+      <string>User (U)</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -1388,11 +1391,17 @@
     <widget class="QLabel" name="programNumberLabel">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>20</x>
        <y>0</y>
-       <width>111</width>
-       <height>16</height>
+       <width>251</width>
+       <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
       <string>PROGRAM</string>
@@ -1401,38 +1410,23 @@
     <widget class="QRadioButton" name="programBankFactory">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>0</y>
-       <width>61</width>
+       <x>0</x>
+       <y>20</y>
+       <width>91</width>
        <height>20</height>
       </rect>
      </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
      <property name="text">
-      <string>Factory</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="programName">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>20</y>
-       <width>151</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
+      <string>Factory (P)</string>
      </property>
     </widget>
     <widget class="QSpinBox" name="programNumber">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>100</x>
        <y>20</y>
        <width>61</width>
        <height>41</height>
@@ -1453,10 +1447,10 @@
    <widget class="QPushButton" name="writeProgram">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>570</y>
-      <width>161</width>
-      <height>81</height>
+      <x>350</x>
+      <y>30</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -1473,13 +1467,31 @@
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QLineEdit" name="programName">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>30</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>671</width>
+     <width>859</width>
      <height>22</height>
     </rect>
    </property>
