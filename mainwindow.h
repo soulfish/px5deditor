@@ -108,6 +108,9 @@ private:
 	AboutDialog *m_dlgAbout;
 
 	AboutDialog* about();
+
+	void updateParamTextValue(PandoraNotification p, unsigned int v);
+
 };
 
 #endif // MAINWINDOW_H

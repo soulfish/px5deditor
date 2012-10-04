@@ -108,7 +108,11 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 		std::cout << " got dyn update call " << std::endl;
 #endif
 		ui->dynamicsBox->setChecked(p.dynamics.getEnabled());
-
+		if ( p.dynamics.getEffect() != ui->dynamicsType->currentIndex() &&
+			 p.dynamics.getParameter() == ui->dynamicsParamDial->value() ) {
+			// if effect changed, but param did not, force param value update!
+			updateParamTextValue(PXD5_MODULE_DYN_PARAM, p.dynamics.getParameter());
+		}
 		ui->dynamicsType->setCurrentIndex( p.dynamics.getEffect() );
 		ui->dynamicsParamName->setText( QString( p.dynamics.getParamName() ) );
 		ui->dynamicsParamDial->setMinimum( p.dynamics.getMinParam() );
@@ -125,6 +129,25 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 		std::cout << " got amp update call " << std::endl;
 #endif
 		ui->amplifierBox->setChecked(p.amp.getEnabled());
+
+		if ( p.amp.getModel() != ui->ampType->currentIndex() ) {
+			if ( p.amp.getGain() == ui->ampParamDial1->value() ) {
+				updateParamTextValue(PXD5_MODULE_AMP_PARAM1, p.amp.getGain());
+			}
+			if ( p.amp.getBass() == ui->ampParamDial2->value() ) {
+				updateParamTextValue(PXD5_MODULE_AMP_PARAM2, p.amp.getBass());
+			}
+			if ( p.amp.getTreble() == ui->ampParamDial3->value() ) {
+				updateParamTextValue(PXD5_MODULE_AMP_PARAM3, p.amp.getTreble());
+			}
+			if ( p.amp.getVolume() == ui->ampParamDial4->value() ) {
+				updateParamTextValue(PXD5_MODULE_AMP_PARAM4, p.amp.getVolume());
+			}
+			if ( p.amp.getMiddle() == ui->ampParamDial5->value() ) {
+				updateParamTextValue(PXD5_MODULE_AMP_PARAM5, p.amp.getMiddle());
+			}
+		}
+
 		ui->ampType->setCurrentIndex( p.amp.getModel() );
 
 		//Gain, Bass, Treble, Volume, Middle
@@ -172,6 +195,11 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #endif
 		ui->cabinetBox->setChecked(p.cabinet.getEnabled());
 
+		if ( p.cabinet.getCabinet() != ui->cabinetType->currentIndex() &&
+			 p.cabinet.getParameter() == ui->cabinetParamDial->value() ) {
+			updateParamTextValue(PXD5_MODULE_CAB_PARAM, p.cabinet.getParameter());
+		}
+
 		ui->cabinetType->setCurrentIndex( p.cabinet.getCabinet() );
 		ui->cabinetParamName->setText( QString( p.cabinet.getParamName() ) );
 		ui->cabinetParamDial->setMinimum( p.cabinet.getMinParam() );
@@ -186,6 +214,11 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #endif
 		ui->modulationBox->setChecked(p.modulation.getEnabled());
 
+		if ( p.modulation.getModulation() != ui->modulationType->currentIndex() &&
+			 p.modulation.getParameter() == ui->modulationParamDial->value() ) {
+			updateParamTextValue(PXD5_MODULE_MOD_PARAM, p.modulation.getParameter());
+		}
+
 		ui->modulationType->setCurrentIndex( p.modulation.getModulation() );
 		ui->modulationParamName->setText( QString( p.modulation.getParamName() ) );
 		ui->modulationParamDial->setMinimum( p.modulation.getMinParam() );
@@ -199,6 +232,15 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 		std::cout << " got delay update call " << std::endl;
 #endif
 		ui->delayBox->setChecked(p.delay.getEnabled());
+
+		if (  p.delay.getDelay() != ui->delayType->currentIndex() ) {
+			if ( p.delay.getParameter1() == ui->delayParamDial->value() ) {
+				updateParamTextValue(PXD5_MODULE_DELAY_PARAM1, p.delay.getParameter1());
+			}
+			if ( p.delay.getParameter2() == ui->delayParamDial2->value() ) {
+				updateParamTextValue(PXD5_MODULE_DELAY_PARAM2, p.delay.getParameter2());
+			}
+		}
 
 		ui->delayType->setCurrentIndex( p.delay.getDelay() );
 		ui->delayParamName->setText( QString( p.delay.getParam1Name() ) );
@@ -218,6 +260,11 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 		std::cout << " got reverb update call " << std::endl;
 #endif
 		ui->reverbBox->setChecked(p.reverb.getEnabled());
+
+		if ( p.reverb.getReverb() != ui->reverbType->currentIndex() &&
+			 p.reverb.getParameter() == ui->reverbParamDial->value() ) {
+			updateParamTextValue(PXD5_MODULE_REVERB_PARAM, p.reverb.getParameter());
+		}
 
 		ui->reverbType->setCurrentIndex( p.reverb.getReverb() );
 		ui->reverbParamName->setText( QString( p.reverb.getParamName() ) );
@@ -273,10 +320,10 @@ void MainWindow::on_programNumber_valueChanged(int v) {
 	m_px5dController->setProgramNumber(v, ui->programBankFactory->isChecked()?PandoraPreset::PROGRAM_FACTORY : PandoraPreset::PROGRAM_USER);
 }
 
+
 void MainWindow::on_dynamicsParamDial_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_DYN_PARAM, v );
-	const char* paramValueAsText = m_px5dController->Preset()->dynamics.getParamStringValue(v);
-	ui->dynamicsParam->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_DYN_PARAM, v);
 }
 
 void MainWindow::on_dynamicsType_activated(int index) {
@@ -297,34 +344,27 @@ void MainWindow::on_ampType_activated(int v) {
 
 void MainWindow::on_ampParamDial1_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_AMP_PARAM1, v );
-
-	const char* paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_GAIN, v);
-	ui->ampParam1->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_AMP_PARAM1, v);
 }
 
 void MainWindow::on_ampParamDial2_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_AMP_PARAM2, v );
-
-	const char* paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_BASS, v);
-	ui->ampParam2->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_AMP_PARAM2, v);
 }
 
 void MainWindow::on_ampParamDial3_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_AMP_PARAM3, v );
-	const char* paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_TREBLE, v);
-	ui->ampParam3->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_AMP_PARAM3, v);
 }
 
 void MainWindow::on_ampParamDial4_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_AMP_PARAM4, v );
-	const char* paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_VOLUME, v);
-	ui->ampParam4->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_AMP_PARAM4, v);
 }
 
 void MainWindow::on_ampParamDial5_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_AMP_PARAM5, v );
-	const char* paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_MIDDLE, v);
-	ui->ampParam5->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_AMP_PARAM5, v);
 }
 
 void MainWindow::on_cabinetType_activated(int v) {
@@ -333,8 +373,7 @@ void MainWindow::on_cabinetType_activated(int v) {
 
 void MainWindow::on_cabinetParamDial_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_CAB_PARAM, v );
-	const char* paramValueAsText = m_px5dController->Preset()->cabinet.getParamStringValue(v);
-	ui->cabinetParam->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_CAB_PARAM, v);
 }
 
 void MainWindow::on_modulationType_activated(int v) {
@@ -343,8 +382,7 @@ void MainWindow::on_modulationType_activated(int v) {
 
 void MainWindow::on_modulationParamDial_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_MOD_PARAM, v );
-	const char* paramValueAsText = m_px5dController->Preset()->modulation.getParamStringValue(v);
-	ui->modulationParam->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_MOD_PARAM, v);
 }
 
 void MainWindow::on_delayType_activated(int v) {
@@ -353,14 +391,12 @@ void MainWindow::on_delayType_activated(int v) {
 
 void MainWindow::on_delayParamDial_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_DELAY_PARAM1, v );
-	const char* paramValueAsText = m_px5dController->Preset()->delay.getParam1StringValue(v);
-	ui->delayParam->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_DELAY_PARAM1, v);
 }
 
 void MainWindow::on_delayParamDial2_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_DELAY_PARAM2, v );
-	const char* paramValueAsText = m_px5dController->Preset()->delay.getParam2StringValue(v);
-	ui->delayParam2->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_DELAY_PARAM2, v);
 }
 
 void MainWindow::on_reverbType_activated(int v) {
@@ -370,17 +406,14 @@ void MainWindow::on_reverbType_activated(int v) {
 
 void MainWindow::on_reverbParamDial_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_REVERB_PARAM, v );
-	const char* paramValueAsText = m_px5dController->Preset()->reverb.getParamStringValue(v);
-	ui->reverbParam->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_REVERB_PARAM, v);
 }
 
 void MainWindow::on_noiseReductionParamDial_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_NOISE_REDUCTION, v );
-	const char* paramValueAsText = m_px5dController->Preset()->noiseReduction.getParamStringValue(v);
-	ui->noiseReductionParam->setText(QString(paramValueAsText));
+	updateParamTextValue(PXD5_MODULE_NOISE_REDUCTION, v);
 	ui->noiseReductionBox->setChecked(v>0);
 }
-
 
 void MainWindow::on_writeProgram_released() {
 
@@ -471,4 +504,73 @@ void MainWindow::on_noiseReductionBox_toggled(bool v) {
 	// It's just disabled when level is at 0, enabled otherwise.
 	// When enabling, let's put it on 1 (0x03 in sysex value)
 	ui->noiseReductionParamDial->setValue( v==Qt::Unchecked?0:3 );
+}
+
+void MainWindow::updateParamTextValue(PandoraNotification p, unsigned int v) {
+
+	const char* paramValueAsText = "";
+	switch (p) {
+
+	case PXD5_MODULE_DYN_PARAM:
+		paramValueAsText = m_px5dController->Preset()->dynamics.getParamStringValue(v);
+		ui->dynamicsParam->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_AMP_PARAM1:
+		paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_GAIN, v);
+		ui->ampParam1->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_AMP_PARAM2:
+		paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_BASS, v);
+		ui->ampParam2->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_AMP_PARAM3:
+		paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_TREBLE, v);
+		ui->ampParam3->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_AMP_PARAM4:
+		paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_VOLUME, v);
+		ui->ampParam4->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_AMP_PARAM5:
+		paramValueAsText = m_px5dController->Preset()->amp.getParamStringValue(PresetAmp::AMP_MIDDLE, v);
+		ui->ampParam5->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_CAB_PARAM:
+		paramValueAsText = m_px5dController->Preset()->cabinet.getParamStringValue(v);
+		ui->cabinetParam->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_MOD_PARAM:
+		paramValueAsText = m_px5dController->Preset()->modulation.getParamStringValue(v);
+		ui->modulationParam->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_REVERB_PARAM:
+		paramValueAsText = m_px5dController->Preset()->reverb.getParamStringValue(v);
+		ui->reverbParam->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_DELAY_PARAM1:
+		paramValueAsText = m_px5dController->Preset()->delay.getParam1StringValue(v);
+		ui->delayParam->setText(QString(paramValueAsText));
+		break;
+	case PXD5_MODULE_DELAY_PARAM2:
+		paramValueAsText = m_px5dController->Preset()->delay.getParam2StringValue(v);
+		ui->delayParam2->setText(QString(paramValueAsText));
+		break;
+
+	case PXD5_MODULE_NOISE_REDUCTION:
+		paramValueAsText = m_px5dController->Preset()->noiseReduction.getParamStringValue(v);
+		ui->noiseReductionParam->setText(QString(paramValueAsText));
+		break;
+
+	default:
+		break;
+	}
 }
