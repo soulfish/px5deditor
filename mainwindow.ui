@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>859</width>
-    <height>525</height>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,19 +101,19 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="dynamicsBox">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>90</y>
-      <width>161</width>
-      <height>181</height>
+      <width>151</width>
+      <height>171</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <weight>50</weight>
-      <bold>false</bold>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="autoFillBackground">
@@ -126,27 +126,14 @@
      <string>DYNAMICS</string>
     </property>
     <property name="checkable">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
-    <widget class="QCheckBox" name="dynamicsOn">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>10</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-    </widget>
     <widget class="QComboBox" name="dynamicsType">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
-       <width>141</width>
+       <y>20</y>
+       <width>131</width>
        <height>24</height>
       </rect>
      </property>
@@ -155,7 +142,7 @@
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -235,43 +222,33 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="amplifierBox">
     <property name="geometry">
      <rect>
-      <x>191</x>
+      <x>190</x>
       <y>91</y>
       <width>461</width>
-      <height>181</height>
+      <height>171</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <weight>50</weight>
-      <bold>false</bold>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="title">
      <string>AMPLIFIER</string>
     </property>
-    <widget class="QCheckBox" name="amplifierOn">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>10</y>
-       <width>40</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-    </widget>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
     <widget class="QComboBox" name="ampType">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
-       <width>301</width>
+       <y>20</y>
+       <width>431</width>
        <height>24</height>
       </rect>
      </property>
@@ -280,7 +257,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -342,7 +319,7 @@
      <widget class="QDial" name="ampParamDial1">
       <property name="geometry">
        <rect>
-        <x>16</x>
+        <x>20</x>
         <y>16</y>
         <width>61</width>
         <height>64</height>
@@ -363,7 +340,7 @@
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -446,7 +423,7 @@
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -529,7 +506,7 @@
      <property name="geometry">
       <rect>
        <x>270</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -612,7 +589,7 @@
      <property name="geometry">
       <rect>
        <x>360</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -692,36 +669,32 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
+   <widget class="QGroupBox" name="modulationBox">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>280</y>
       <width>171</width>
-      <height>181</height>
+      <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="title">
      <string>MODULATION</string>
     </property>
-    <widget class="QCheckBox" name="modulationOn">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>10</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-    </widget>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
     <widget class="QComboBox" name="modulationType">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>20</y>
        <width>151</width>
        <height>24</height>
       </rect>
@@ -731,7 +704,7 @@
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -811,36 +784,32 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_4">
+   <widget class="QGroupBox" name="delayBox">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>210</x>
       <y>280</y>
       <width>281</width>
-      <height>181</height>
+      <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="title">
      <string>DELAY</string>
     </property>
-    <widget class="QCheckBox" name="delayOn">
-     <property name="geometry">
-      <rect>
-       <x>230</x>
-       <y>10</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-    </widget>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
     <widget class="QComboBox" name="delayType">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>20</y>
        <width>261</width>
        <height>24</height>
       </rect>
@@ -850,7 +819,7 @@
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -933,7 +902,7 @@
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -1013,36 +982,32 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_5">
+   <widget class="QGroupBox" name="cabinetBox">
     <property name="geometry">
      <rect>
-      <x>660</x>
+      <x>670</x>
       <y>90</y>
       <width>171</width>
-      <height>181</height>
+      <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="title">
      <string>CABINET</string>
     </property>
-    <widget class="QCheckBox" name="cabinetOn">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>10</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-    </widget>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
     <widget class="QWidget" name="widgetCabParam" native="true">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>60</y>
+       <x>40</x>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -1125,43 +1090,39 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
-       <width>141</width>
+       <y>20</y>
+       <width>151</width>
        <height>24</height>
       </rect>
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_6">
+   <widget class="QGroupBox" name="reverbBox">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>510</x>
       <y>280</y>
       <width>161</width>
-      <height>181</height>
+      <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="title">
      <string>REVERB</string>
     </property>
-    <widget class="QCheckBox" name="reverbOn">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>10</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-    </widget>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
     <widget class="QWidget" name="widgetReverbParam" native="true">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>60</y>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -1244,30 +1205,39 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>20</y>
        <width>141</width>
        <height>24</height>
       </rect>
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_7">
+   <widget class="QGroupBox" name="noiseReductionBox">
     <property name="geometry">
      <rect>
-      <x>660</x>
+      <x>690</x>
       <y>280</y>
-      <width>171</width>
-      <height>181</height>
+      <width>151</width>
+      <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="title">
      <string>NOISE REDUCTION</string>
     </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
     <widget class="QWidget" name="widgetNoiseReductionParam" native="true">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>60</y>
+       <x>30</x>
+       <y>50</y>
        <width>91</width>
        <height>111</height>
       </rect>
@@ -1346,19 +1316,6 @@
       </property>
      </widget>
     </widget>
-    <widget class="QCheckBox" name="noiseReductionOn">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>10</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="programCommands" native="true">
     <property name="geometry">
@@ -1420,7 +1377,7 @@
       <enum>Qt::RightToLeft</enum>
      </property>
      <property name="text">
-      <string>Factory (P)</string>
+      <string>Preset (P)</string>
      </property>
     </widget>
     <widget class="QSpinBox" name="programNumber">

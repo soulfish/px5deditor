@@ -103,7 +103,7 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #ifdef DEBUG
 		std::cout << " got dyn update call " << std::endl;
 #endif
-		ui->dynamicsOn->setChecked(p.dynamics.getEnabled());
+		ui->dynamicsBox->setChecked(p.dynamics.getEnabled());
 
 		ui->dynamicsType->setCurrentIndex( p.dynamics.getEffect() );
 		ui->dynamicsParamName->setText( QString( p.dynamics.getParamName() ) );
@@ -120,7 +120,7 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #ifdef DEBUG
 		std::cout << " got amp update call " << std::endl;
 #endif
-		ui->amplifierOn->setChecked(p.amp.getEnabled());
+		ui->amplifierBox->setChecked(p.amp.getEnabled());
 		ui->ampType->setCurrentIndex( p.amp.getModel() );
 
 		//Gain, Bass, Treble, Volume, Middle
@@ -166,7 +166,7 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #ifdef DEBUG
 		std::cout << " got cab update call " << std::endl;
 #endif
-		ui->cabinetOn->setChecked(p.cabinet.getEnabled());
+		ui->cabinetBox->setChecked(p.cabinet.getEnabled());
 
 		ui->cabinetType->setCurrentIndex( p.cabinet.getCabinet() );
 		ui->cabinetParamName->setText( QString( p.cabinet.getParamName() ) );
@@ -180,7 +180,7 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #ifdef DEBUG
 		std::cout << " got mod update call " << std::endl;
 #endif
-		ui->modulationOn->setChecked(p.modulation.getEnabled());
+		ui->modulationBox->setChecked(p.modulation.getEnabled());
 
 		ui->modulationType->setCurrentIndex( p.modulation.getModulation() );
 		ui->modulationParamName->setText( QString( p.modulation.getParamName() ) );
@@ -194,7 +194,7 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #ifdef DEBUG
 		std::cout << " got delay update call " << std::endl;
 #endif
-		ui->delayOn->setChecked(p.delay.getEnabled());
+		ui->delayBox->setChecked(p.delay.getEnabled());
 
 		ui->delayType->setCurrentIndex( p.delay.getDelay() );
 		ui->delayParamName->setText( QString( p.delay.getParam1Name() ) );
@@ -213,7 +213,7 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #ifdef DEBUG
 		std::cout << " got reverb update call " << std::endl;
 #endif
-		ui->reverbOn->setChecked(p.reverb.getEnabled());
+		ui->reverbBox->setChecked(p.reverb.getEnabled());
 
 		ui->reverbType->setCurrentIndex( p.reverb.getReverb() );
 		ui->reverbParamName->setText( QString( p.reverb.getParamName() ) );
@@ -228,7 +228,7 @@ void MainWindow::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 #ifdef DEBUG
 		std::cout << " got noise reduction update call " << std::endl;
 #endif
-		ui->noiseReductionOn->setChecked(p.noiseReduction.getEnabled());
+		ui->noiseReductionBox->setChecked(p.noiseReduction.getEnabled());
 
 		ui->noiseReductionParamName->setText( QString( p.noiseReduction.getParamName() ) );
 		ui->noiseReductionParamDial->setMinimum( p.noiseReduction.getMinParam() );
@@ -254,30 +254,6 @@ void MainWindow::on_connectToPandora_released()
 
 void MainWindow::on_programNumber_valueChanged(int v) {
 	m_px5dController->setProgramNumber(v, ui->programBankFactory->isChecked()?PandoraPreset::PROGRAM_FACTORY : PandoraPreset::PROGRAM_USER);
-}
-
-void MainWindow::on_dynamicsOn_stateChanged(int v) {
-	m_px5dController->setModuleState( PXD5_MODULE_DYN, v!=Qt::Unchecked );
-}
-
-void MainWindow::on_amplifierOn_stateChanged(int v) {
-	m_px5dController->setModuleState( PXD5_MODULE_AMP, v!=Qt::Unchecked );
-}
-
-void MainWindow::on_cabinetOn_stateChanged(int v) {
-	m_px5dController->setModuleState( PXD5_MODULE_CAB, v!=Qt::Unchecked );
-}
-
-void MainWindow::on_modulationOn_stateChanged(int v) {
-	m_px5dController->setModuleState( PXD5_MODULE_MOD, v!=Qt::Unchecked );
-}
-
-void MainWindow::on_delayOn_stateChanged(int v) {
-	m_px5dController->setModuleState( PXD5_MODULE_DELAY, v!=Qt::Unchecked );
-}
-
-void MainWindow::on_reverbOn_stateChanged(int v) {
-	m_px5dController->setModuleState( PXD5_MODULE_REVERB, v!=Qt::Unchecked );
 }
 
 void MainWindow::on_dynamicsParamDial_valueChanged(int v) {
@@ -385,16 +361,9 @@ void MainWindow::on_noiseReductionParamDial_valueChanged(int v) {
 	m_px5dController->setParamChanged( PXD5_MODULE_NOISE_REDUCTION, v );
 	const char* paramValueAsText = m_px5dController->Preset()->noiseReduction.getParamStringValue(v);
 	ui->noiseReductionParam->setText(QString(paramValueAsText));
-	ui->noiseReductionOn->setChecked(v>0);
+	ui->noiseReductionBox->setChecked(v>0);
 }
 
-void MainWindow::on_noiseReductionOn_stateChanged(int v) {
-
-	// Noise reduction is not a real enabled/disabled module.
-	// It's just disabled when level is at 0, enabled otherwise.
-	// When enabling, let's put it on 1 (0x03 in sysex value)
-	ui->noiseReductionParamDial->setValue( v==Qt::Unchecked?0:3 );
-}
 
 void MainWindow::on_writeProgram_released() {
 
@@ -454,4 +423,35 @@ AboutDialog* MainWindow::about() {
 		m_dlgAbout = new AboutDialog(this);
 	}
 	return m_dlgAbout;
+}
+
+void MainWindow::on_dynamicsBox_toggled(bool v) {
+	m_px5dController->setModuleState( PXD5_MODULE_DYN, v!=Qt::Unchecked );
+}
+
+void MainWindow::on_amplifierBox_toggled(bool v) {
+	m_px5dController->setModuleState( PXD5_MODULE_AMP, v!=Qt::Unchecked );
+}
+
+void MainWindow::on_cabinetBox_toggled(bool v) {
+	m_px5dController->setModuleState( PXD5_MODULE_CAB, v!=Qt::Unchecked );
+}
+
+void MainWindow::on_modulationBox_toggled(bool v) {
+	m_px5dController->setModuleState( PXD5_MODULE_MOD, v!=Qt::Unchecked );
+}
+
+void MainWindow::on_delayBox_toggled(bool v) {
+	m_px5dController->setModuleState( PXD5_MODULE_DELAY, v!=Qt::Unchecked );
+}
+
+void MainWindow::on_reverbBox_toggled(bool v) {
+	m_px5dController->setModuleState( PXD5_MODULE_REVERB, v!=Qt::Unchecked );
+}
+
+void MainWindow::on_noiseReductionBox_toggled(bool v) {
+	// Noise reduction is not a real enabled/disabled module.
+	// It's just disabled when level is at 0, enabled otherwise.
+	// When enabling, let's put it on 1 (0x03 in sysex value)
+	ui->noiseReductionParamDial->setValue( v==Qt::Unchecked?0:3 );
 }

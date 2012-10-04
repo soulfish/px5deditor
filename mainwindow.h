@@ -42,18 +42,6 @@ private slots:
 	void on_connectToPandora_released();
 	void on_programNumber_valueChanged(int arg1);
 
-	void on_dynamicsOn_stateChanged(int arg1);
-
-	void on_amplifierOn_stateChanged(int arg1);
-
-	void on_cabinetOn_stateChanged(int arg1);
-
-	void on_modulationOn_stateChanged(int arg1);
-
-	void on_delayOn_stateChanged(int arg1);
-
-	void on_reverbOn_stateChanged(int arg1);
-
 	void on_dynamicsParamDial_valueChanged(int value);
 
 	void on_dynamicsType_activated(int index);
@@ -94,13 +82,25 @@ private slots:
 
 	void on_noiseReductionParamDial_valueChanged(int value);
 
-	void on_noiseReductionOn_stateChanged(int arg1);
-
 	void on_writeProgram_released();
 
 	void on_actionQuit_triggered();
 
 	void on_actionAbout_triggered();
+
+	void on_dynamicsBox_toggled(bool arg1);
+
+	void on_amplifierBox_toggled(bool arg1);
+
+	void on_cabinetBox_toggled(bool arg1);
+
+	void on_modulationBox_toggled(bool arg1);
+
+	void on_delayBox_toggled(bool arg1);
+
+	void on_reverbBox_toggled(bool arg1);
+
+	void on_noiseReductionBox_toggled(bool arg1);
 
 private:
 	Ui::MainWindow *ui;
