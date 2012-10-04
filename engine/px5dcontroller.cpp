@@ -847,12 +847,12 @@ void Px5dController::setModuleState(PandoraNotification p, int value) {
 						*/
 	bool enabled = value>0;
 
-	if ( ( p==PXD5_MODULE_DYN && m_currentPreset.dynamics.getEnabled()==enabled ) ||
-		 ( p==PXD5_MODULE_AMP && m_currentPreset.amp.getEnabled()==enabled ) ||
-		 ( p==PXD5_MODULE_CAB && m_currentPreset.cabinet.getEnabled()==enabled ) ||
-		 ( p==PXD5_MODULE_MOD && m_currentPreset.modulation.getEnabled()==enabled ) ||
-		 ( p==PXD5_MODULE_DELAY && m_currentPreset.delay.getEnabled()==enabled ) ||
-		 ( p==PXD5_MODULE_REVERB && m_currentPreset.reverb.getEnabled()==enabled )
+	if ( ( p==PX5D_MODULE_DYN && m_currentPreset.dynamics.getEnabled()==enabled ) ||
+		 ( p==PX5D_MODULE_AMP && m_currentPreset.amp.getEnabled()==enabled ) ||
+		 ( p==PX5D_MODULE_CAB && m_currentPreset.cabinet.getEnabled()==enabled ) ||
+		 ( p==PX5D_MODULE_MOD && m_currentPreset.modulation.getEnabled()==enabled ) ||
+		 ( p==PX5D_MODULE_DELAY && m_currentPreset.delay.getEnabled()==enabled ) ||
+		 ( p==PX5D_MODULE_REVERB && m_currentPreset.reverb.getEnabled()==enabled )
 		 ) {
 #ifdef DEBUG
 		std::cout << " mod already enabled/disabled" << std::endl;
@@ -867,32 +867,32 @@ void Px5dController::setModuleState(PandoraNotification p, int value) {
 	message.push_back( 0x02 );
 	switch ( p ) {
 
-	case PXD5_MODULE_DYN:
+	case PX5D_MODULE_DYN:
 		message.push_back( 0x00 );
 		m_currentPreset.dynamics.enable(enabled);
 		break;
 
-	case PXD5_MODULE_AMP:
+	case PX5D_MODULE_AMP:
 		message.push_back( 0x01 );
 		m_currentPreset.amp.enable(enabled);
 		break;
 
-	case PXD5_MODULE_CAB:
+	case PX5D_MODULE_CAB:
 		message.push_back( 0x02 );
 		m_currentPreset.cabinet.enable(enabled);
 		break;
 
-	case PXD5_MODULE_MOD:
+	case PX5D_MODULE_MOD:
 		message.push_back( 0x03 );
 		m_currentPreset.modulation.enable(enabled);
 		break;
 
-	case PXD5_MODULE_DELAY:
+	case PX5D_MODULE_DELAY:
 		message.push_back( 0x04 );
 		m_currentPreset.delay.enable(enabled);
 		break;
 
-	case PXD5_MODULE_REVERB:
+	case PX5D_MODULE_REVERB:
 		message.push_back( 0x05 );
 		m_currentPreset.reverb.enable(enabled);
 		break;
@@ -916,30 +916,30 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 	// FIXME: check what happens when dynamics type change leads to
 	// an invalid value of Param (might happen in amp too) => update param ?
 
-	if ( ( p==PXD5_MODULE_DYN_TYPE && m_currentPreset.dynamics.getEffect()==v ) ||
-		 ( p==PXD5_MODULE_DYN_PARAM && m_currentPreset.dynamics.getParameter()==v ) ||
+	if ( ( p==PX5D_MODULE_DYN_TYPE && m_currentPreset.dynamics.getEffect()==v ) ||
+		 ( p==PX5D_MODULE_DYN_PARAM && m_currentPreset.dynamics.getParameter()==v ) ||
 
-		 ( p==PXD5_MODULE_AMP_TYPE && m_currentPreset.amp.getModel()==v ) ||
-		 ( p==PXD5_MODULE_AMP_PARAM1 && m_currentPreset.amp.getGain()==v ) ||
-		 ( p==PXD5_MODULE_AMP_PARAM2 && m_currentPreset.amp.getBass()==v ) ||
-		 ( p==PXD5_MODULE_AMP_PARAM3 && m_currentPreset.amp.getTreble()==v ) ||
-		 ( p==PXD5_MODULE_AMP_PARAM4 && m_currentPreset.amp.getVolume()==v ) ||
-		 ( p==PXD5_MODULE_AMP_PARAM5 && m_currentPreset.amp.getMiddle()==v ) ||
+		 ( p==PX5D_MODULE_AMP_TYPE && m_currentPreset.amp.getModel()==v ) ||
+		 ( p==PX5D_MODULE_AMP_PARAM1 && m_currentPreset.amp.getGain()==v ) ||
+		 ( p==PX5D_MODULE_AMP_PARAM2 && m_currentPreset.amp.getBass()==v ) ||
+		 ( p==PX5D_MODULE_AMP_PARAM3 && m_currentPreset.amp.getTreble()==v ) ||
+		 ( p==PX5D_MODULE_AMP_PARAM4 && m_currentPreset.amp.getVolume()==v ) ||
+		 ( p==PX5D_MODULE_AMP_PARAM5 && m_currentPreset.amp.getMiddle()==v ) ||
 
-		 ( p==PXD5_MODULE_CAB_TYPE && m_currentPreset.cabinet.getCabinet()==v ) ||
-		 ( p==PXD5_MODULE_CAB_PARAM && m_currentPreset.cabinet.getParameter()==v ) ||
+		 ( p==PX5D_MODULE_CAB_TYPE && m_currentPreset.cabinet.getCabinet()==v ) ||
+		 ( p==PX5D_MODULE_CAB_PARAM && m_currentPreset.cabinet.getParameter()==v ) ||
 
-		 ( p==PXD5_MODULE_MOD_TYPE && m_currentPreset.modulation.getModulation()==v ) ||
-		 ( p==PXD5_MODULE_MOD_PARAM && m_currentPreset.modulation.getParameter()==v ) ||
+		 ( p==PX5D_MODULE_MOD_TYPE && m_currentPreset.modulation.getModulation()==v ) ||
+		 ( p==PX5D_MODULE_MOD_PARAM && m_currentPreset.modulation.getParameter()==v ) ||
 
-		 ( p==PXD5_MODULE_DELAY_TYPE && m_currentPreset.delay.getDelay()==v ) ||
-		 ( p==PXD5_MODULE_DELAY_PARAM1 && m_currentPreset.delay.getParameter1()==v ) ||
-		 ( p==PXD5_MODULE_DELAY_PARAM2 && m_currentPreset.delay.getParameter2()==v ) ||
+		 ( p==PX5D_MODULE_DELAY_TYPE && m_currentPreset.delay.getDelay()==v ) ||
+		 ( p==PX5D_MODULE_DELAY_PARAM1 && m_currentPreset.delay.getParameter1()==v ) ||
+		 ( p==PX5D_MODULE_DELAY_PARAM2 && m_currentPreset.delay.getParameter2()==v ) ||
 
-		 ( p==PXD5_MODULE_REVERB_TYPE && m_currentPreset.reverb.getReverb()==v ) ||
-		 ( p==PXD5_MODULE_REVERB_PARAM && m_currentPreset.reverb.getParameter()==v ) ||
+		 ( p==PX5D_MODULE_REVERB_TYPE && m_currentPreset.reverb.getReverb()==v ) ||
+		 ( p==PX5D_MODULE_REVERB_PARAM && m_currentPreset.reverb.getParameter()==v ) ||
 
-		 ( p==PXD5_MODULE_NOISE_REDUCTION && m_currentPreset.noiseReduction.getParameter()==v )
+		 ( p==PX5D_MODULE_NOISE_REDUCTION && m_currentPreset.noiseReduction.getParameter()==v )
 
 		 ) {
 #ifdef DEBUG
@@ -958,7 +958,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 	switch ( p ) {
 
 	// DYN TYPE:		(f0 42 30 73 20) 41 00 08 00 NN f7
-	case PXD5_MODULE_DYN_TYPE:
+	case PX5D_MODULE_DYN_TYPE:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x08 );
@@ -967,7 +967,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// DYNA STEP:		(f0 42 30 73 20) 41 00 0e 00 NN f7
-	case PXD5_MODULE_DYN_PARAM:
+	case PX5D_MODULE_DYN_PARAM:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x0e );
@@ -976,7 +976,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// AMP TYPE: (f0 42 30 73 20) 41 00 09 00 NN f7
-	case PXD5_MODULE_AMP_TYPE:
+	case PX5D_MODULE_AMP_TYPE:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x09 );
@@ -985,7 +985,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// GAIN STEP:		(f0 42 30 73 20) 41 01 00 00 NN f7
-	case PXD5_MODULE_AMP_PARAM1:
+	case PX5D_MODULE_AMP_PARAM1:
 		message.push_back( 0x41 );
 		message.push_back( 0x01 );
 		message.push_back( 0x00 );
@@ -994,7 +994,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// BASS STEP:		(f0 42 30 73 20) 41 01 01 00 NN f7
-	case PXD5_MODULE_AMP_PARAM2:
+	case PX5D_MODULE_AMP_PARAM2:
 		message.push_back( 0x41 );
 		message.push_back( 0x01 );
 		message.push_back( 0x01 );
@@ -1003,7 +1003,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// TREBLE STEP:		(f0 42 30 73 20) 41 01 02 00 NN f7
-	case PXD5_MODULE_AMP_PARAM3:
+	case PX5D_MODULE_AMP_PARAM3:
 		message.push_back( 0x41 );
 		message.push_back( 0x01 );
 		message.push_back( 0x02 );
@@ -1012,7 +1012,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// VOLUME STEP:		(f0 42 30 73 20) 41 01 03 00 NN f7
-	case PXD5_MODULE_AMP_PARAM4:
+	case PX5D_MODULE_AMP_PARAM4:
 		message.push_back( 0x41 );
 		message.push_back( 0x01 );
 		message.push_back( 0x03 );
@@ -1021,7 +1021,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// MIDDLE STEP:		(f0 42 30 73 20) 41 00 0f 00 NN f7
-	case PXD5_MODULE_AMP_PARAM5:
+	case PX5D_MODULE_AMP_PARAM5:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x0f );
@@ -1030,7 +1030,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// CAB TYPE:			(f0 42 30 73 20) 41 00 0a 00 NN f7
-	case PXD5_MODULE_CAB_TYPE:
+	case PX5D_MODULE_CAB_TYPE:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x0a );
@@ -1039,7 +1039,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// CAB PRESENCE STEP:	(f0 42 30 73 20) 41 00 10 00 NN f7
-	case PXD5_MODULE_CAB_PARAM:
+	case PX5D_MODULE_CAB_PARAM:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x10 );
@@ -1048,7 +1048,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// MOD TYPE: (f0 42 30 73 20) 41 00 0b 00 01 f7
-	case PXD5_MODULE_MOD_TYPE:
+	case PX5D_MODULE_MOD_TYPE:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x0b );
@@ -1057,7 +1057,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// MOD PARAM: (f0 42 30 73 20) 41 00 11 00 NN f7
-	case PXD5_MODULE_MOD_PARAM:
+	case PX5D_MODULE_MOD_PARAM:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x11 );
@@ -1066,7 +1066,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// DELAY TYPE:		(f0 42 30 73 20) 41 00 0c 00 NN f7
-	case PXD5_MODULE_DELAY_TYPE:
+	case PX5D_MODULE_DELAY_TYPE:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x0c );
@@ -1075,7 +1075,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// DELAY FX LEVEL:	(f0 42 30 73 20) 41 00 12 00 NN f7
-	case PXD5_MODULE_DELAY_PARAM1:
+	case PX5D_MODULE_DELAY_PARAM1:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x12 );
@@ -1084,7 +1084,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// DELAY TIME:		(f0 42 30 73 20) 41 00 13 00 NN f7
-	case PXD5_MODULE_DELAY_PARAM2:
+	case PX5D_MODULE_DELAY_PARAM2:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x13 );
@@ -1093,7 +1093,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// REVERB TYPE:		(f0 42 30 73 20) 41 00 0d 00 NN f7
-	case PXD5_MODULE_REVERB_TYPE:
+	case PX5D_MODULE_REVERB_TYPE:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x0d );
@@ -1102,7 +1102,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// REVERB FX LEVEL:	(f0 42 30 73 20) 41 00 14 00 NN f7
-	case PXD5_MODULE_REVERB_PARAM:
+	case PX5D_MODULE_REVERB_PARAM:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x14 );
@@ -1111,7 +1111,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		break;
 
 	// Noise Reduction: (f0 42 30 73 20) 41 00 15 00 NN f7
-	case PXD5_MODULE_NOISE_REDUCTION:
+	case PX5D_MODULE_NOISE_REDUCTION:
 		message.push_back( 0x41 );
 		message.push_back( 0x00 );
 		message.push_back( 0x15 );
