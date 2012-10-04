@@ -28,6 +28,10 @@
 
 #include "aboutdialog.h"
 
+#include "constants.h"
+
+#include <sys/utsname.h>
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
@@ -36,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->setupUi(this);
 
-	setWindowTitle(QString("Pandora PX5D Editor for Linux - v0.1 alpha"));
+	setWindowTitle(QString("Pandora PX5D Editor for Linux - ") + PGM_VERSION);
 
 	m_px5dController = new Px5dController();
 	m_px5dController->addObserver(*this);
@@ -246,6 +250,19 @@ void MainWindow::on_connectToPandora_released()
 		ui->px5dStatusOut->setText( QString(m_px5dController->pandoraOutPortName().c_str()) );
 
 	} else {
+
+		utsname kernelinfo;
+		uname(&kernelinfo);
+
+		QMessageBox msgBox;
+		msgBox.setText( "Could not connect to PX5D unit!");
+		msgBox.setInformativeText( QString("Please check that the device is connected to USB and powered on. ")+
+								   QString("Please note that you need at least Linux kernel 3. Your version is: ") +
+									QString(kernelinfo.release) );
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.setDefaultButton(QMessageBox::Ok);
+		int ret = msgBox.exec();
+
 		ui->px5dStatusIn->setText( tr("Cannot connect to Pandora...") );
 		ui->px5dStatusOut->setText( tr("Cannot connect to Pandora...") );
 	}
