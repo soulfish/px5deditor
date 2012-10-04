@@ -92,7 +92,7 @@ unsigned int PresetDynamics::getMaxParam() {
 	case BASSFUZZ:
 		return 0x1b;
 	default:
-		return 0x1f;
+		return 0x1e;
 	}
 
 }

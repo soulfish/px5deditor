@@ -115,5 +115,5 @@ unsigned int PresetCabinet::getMinParam() {
 }
 
 unsigned int PresetCabinet::getMaxParam() {
-	return 0x1f;
+	return 0x1e;
 }
