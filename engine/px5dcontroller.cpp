@@ -17,16 +17,13 @@
 */
 
 #include <iomanip>
-
 #include "px5dcontroller.h"
-
 #include "RtError.h"
-
 #include <signal.h>
-
 #include "presetparameters.h"
 #include "pandorapreset.h"
-#include "pandorapreset.h"
+
+// FIXME !!! MAKE IT THREAD SAFE !!!!
 
 // Platform-dependent sleep routines.
 #if defined(__WINDOWS_MM__)
@@ -318,7 +315,7 @@ void Px5dController::decodeSysex(std::vector< unsigned char > *sysex )
 			//TODO: pass the message to a utility function "extractName"
 			string prgName = "";
 			for ( int i=7; i<7+7; i++ ) {
-				char c = sysex->at(i);
+				char c = sysex->at(i); //BUG!!
 				prgName += PandoraPreset::translatePandoraCharacter( c );
 			}
 
@@ -825,7 +822,7 @@ void Px5dController::requestCurrentProgramData()
 /*
  * Ask to set a module state
 */
-void Px5dController::setModuleState(PandoraNotification p, int value) {
+void Px5dController::setModuleState(PandoraNotification p, unsigned int value) {
 	/*
 	Dynamics ON:		f0 42 30 73 20 41 02 00 00 01 f7
 	Dynamics OFF:		f0 42 30 73 20 41 02 00 00 00 f7
@@ -897,6 +894,9 @@ void Px5dController::setModuleState(PandoraNotification p, int value) {
 		m_currentPreset.reverb.enable(enabled);
 		break;
 
+	default:
+		return;
+
 		//TODO: handle noise as module ? value=0 => disabled
 	}
 
@@ -911,10 +911,7 @@ void Px5dController::setModuleState(PandoraNotification p, int value) {
 /*
  * Ask for a parameter change
  */
-void Px5dController::setParamChanged(PandoraNotification p, int v) {
-
-	// FIXME: check what happens when dynamics type change leads to
-	// an invalid value of Param (might happen in amp too) => update param ?
+void Px5dController::setParamChanged(PandoraNotification p, unsigned int v) {
 
 	if ( ( p==PX5D_MODULE_DYN_TYPE && m_currentPreset.dynamics.getEffect()==v ) ||
 		 ( p==PX5D_MODULE_DYN_PARAM && m_currentPreset.dynamics.getParameter()==v ) ||
@@ -950,10 +947,6 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 
 	std::vector<unsigned char> message;
 	fillPandoraSysexHeader(&message);
-
-
-	// FIXME: when a model change occurs, send the GUI
-	// an update for parameters name/values !!!
 
 	switch ( p ) {
 
@@ -1117,9 +1110,10 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 		message.push_back( 0x15 );
 		message.push_back( 0x00 );
 		m_currentPreset.noiseReduction.setParameter(v);
-		m_currentPreset.noiseReduction.enable(v>0);
 		break;
 
+	default:
+		return;
 		//DONE!
 	}
 
@@ -1131,7 +1125,7 @@ void Px5dController::setParamChanged(PandoraNotification p, int v) {
 }
 
 
-void Px5dController::SaveCurrentProgramToSlot(int slot) {
+void Px5dController::SaveCurrentProgramToSlot(unsigned int slot) {
 
 	// WRITE PROGRAM N:	(f0 42 30 73 20) 11 00 NN f7
 	std::vector<unsigned char> message;

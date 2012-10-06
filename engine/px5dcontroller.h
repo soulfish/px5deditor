@@ -54,12 +54,12 @@ public:
 	void requestFullDump();
 	void requestCurrentProgramData();
 
-	void setModuleState( PandoraNotification p, int value );
-	void setParamChanged( PandoraNotification p, int value);
+	void setModuleState( PandoraNotification p, unsigned int value );
+	void setParamChanged( PandoraNotification p, unsigned int value);
 
 	PandoraPreset* Preset() { return &m_currentPreset; }
 
-	void SaveCurrentProgramToSlot(int slot);
+	void SaveCurrentProgramToSlot(unsigned int slot);
 
 private:
 	int m_pandoraInPort;

@@ -21,6 +21,14 @@
 
 int main(int argc, char *argv[])
 {
+/*
+ * TODO : check the use of theses methods
+ QCoreApplication::setOrganizationName(QSTR_DOMAIN);
+ QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
+ QCoreApplication::setApplicationName(QSTR_APPNAME);
+ a.setWindowIcon(QIcon(":/px5deditor/px5deditor_32x32.png"));
+*/
+
 	QApplication a(argc, argv);
 	MainWindow w;
 	w.show();

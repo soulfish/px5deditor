@@ -53,7 +53,7 @@ public:
 	};
 
 	string name;
-	int number;
+	unsigned int number;
 	ProgramBank slot;
 
 private:

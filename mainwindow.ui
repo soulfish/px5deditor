@@ -1231,7 +1231,7 @@
      <string>NOISE REDUCTION</string>
     </property>
     <property name="checkable">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <widget class="QWidget" name="widgetNoiseReductionParam" native="true">
      <property name="geometry">
@@ -1435,6 +1435,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Droid Sans Mono</family>
       <pointsize>14</pointsize>
      </font>
     </property>

@@ -19,16 +19,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "engine/px5dcontroller.h"
-#include "engine/pandoraobservable.h"
-#include "engine/pandoraobserver.h"
+#include <QMutex>
 #include "aboutdialog.h"
+#include "px5dbridge.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow, public PandoraObserver
+class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 
@@ -36,10 +35,9 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-	virtual void update(PandoraObservable* o, PandoraUpdatedSignal bitflag, PandoraPreset &p);
-
 private slots:
 	void on_connectToPandora_released();
+
 	void on_programNumber_valueChanged(int arg1);
 
 	void on_dynamicsParamDial_valueChanged(int value);
@@ -100,16 +98,16 @@ private slots:
 
 	void on_reverbBox_toggled(bool arg1);
 
-	void on_noiseReductionBox_toggled(bool arg1);
-
 private:
 	Ui::MainWindow *ui;
-	Px5dController *m_px5dController;
 	AboutDialog *m_dlgAbout;
-
 	AboutDialog* about();
 
+	PX5DBridge bridge;
 	void updateParamTextValue(PandoraNotification p, unsigned int v);
+
+protected:
+	void customEvent( QEvent *event );
 
 };
 

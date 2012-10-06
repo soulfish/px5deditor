@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     engine/presetnoisereduction.cpp \
     engine/presetreverb.cpp \
     engine/presetcabinet.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    px5dbridge.cpp
 
 HEADERS  += mainwindow.h \
     engine/px5dcontroller.h \
@@ -48,7 +49,9 @@ HEADERS  += mainwindow.h \
     engine/presetreverb.h \
     engine/presetcabinet.h \
     aboutdialog.h \
-    constants.h
+    constants.h \
+    events.h \
+    px5dbridge.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui

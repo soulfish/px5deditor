@@ -15,28 +15,28 @@
 	You should have received a copy of the GNU General Public License along
 	with this program; If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef PRESETNOISEREDUCTION_H
-#define PRESETNOISEREDUCTION_H
+#ifndef PX5DBRIDGE_H
+#define PX5DBRIDGE_H
 
-class PresetNoiseReduction
+#include "engine/px5dcontroller.h"
+#include "engine/pandoraobservable.h"
+#include "engine/pandoraobserver.h"
+
+#include <QObject>
+
+class PX5DBridge : public PandoraObserver
 {
 public:
-	PresetNoiseReduction();
+	PX5DBridge();
+	~PX5DBridge();
+	Px5dController *controller();
+	bool initialize(QObject *parent);
 
-	const char* getParamStringValue(unsigned int value);
-	unsigned int getParameter() { return noiseReductionLevel; }
-	bool getEnabled() { return noiseReductionLevel>0; }
-	bool setParameter(unsigned int p);
-
-	const char* getParamName();
-	unsigned int getMinParam();
-	unsigned int getMaxParam();
+	virtual void update(PandoraObservable* o, PandoraUpdatedSignal bitflag, PandoraPreset &p);
 
 private:
-	unsigned int noiseReductionLevel;
-	unsigned int validateParameter(unsigned int value);
-	static const char* commonValues[];
-
+	Px5dController *m_px5dController;
+	QObject* m_parent;
 };
 
-#endif // PRESETNOISEREDUCTION_H
+#endif // PX5DBRIDGE_H
