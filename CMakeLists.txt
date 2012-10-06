@@ -37,6 +37,7 @@ set (VERSION_SUFFIX "alpha")
 set (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 add_definitions (-DVERSION=${VERSION})
 add_definitions (-D__LINUX_ALSA__)
+add_definitions (-DQT_NO_DEBUG_OUTPUT)
 
 message (STATUS "Korg Pandora PX5d editor for Linux ${VERSION}
     install prefix: ${CMAKE_INSTALL_PREFIX}")
@@ -48,6 +49,7 @@ set( PX5DE_SRCS
   ./main.cpp
   ./mainwindow.cpp
   ./aboutdialog.cpp
+  ./px5dbridge.cpp
   ./engine/pandoraobservable.cpp
   ./engine/presetamp.cpp
   ./engine/presetdynamics.cpp
