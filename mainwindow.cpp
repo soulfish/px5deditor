@@ -80,6 +80,28 @@ MainWindow::MainWindow(QWidget *parent) :
 	QValidator *validator = new RegExpUCValidator(px5dNameRegexp, this);
 	ui->programName->setValidator(validator);
 
+	ui->programName->setToolTip(
+			QString("<p><b>Setting the name of a program:</b></p>"
+					"<ul>"
+					"<li>The number of characters is limited to seven.</li>"
+					"<li>Allowed characters are:"
+					"<pre>"
+					"  !  \"  #  $  %  &amp;  '<br />"
+					"  (  )  *  +  ,  -  .  /<br />"
+					"  0  1  2  3  4  5  6  7<br />"
+					"  8  9  :  ;  &lt;  =  &gt;  ?<br />"
+					"  @  A  B  C  D  E  F  G<br />"
+					"  H  I  J  K  L  M  N  O<br />"
+					"  P  Q  R  S  T  U  V  W<br />"
+					"  X  Y  Z  [  \  ]  ^ [SPACE]"
+					"</pre>"
+					"</li>"
+					"Warning: there is a bug in the PX5D firmware, if you change the "
+					"cursor position on the unit, it will change the Amp Middle value too."
+
+					"</ul>"
+					));
+
 }
 
 MainWindow::~MainWindow() {
