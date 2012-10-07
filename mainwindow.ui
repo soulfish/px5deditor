@@ -2,16 +2,25 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>859</width>
-    <height>516</height>
+    <width>860</width>
+    <height>512</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PX5DEditor</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -1449,7 +1458,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>859</width>
+     <width>860</width>
      <height>22</height>
     </rect>
    </property>

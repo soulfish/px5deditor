@@ -21,16 +21,17 @@
 
 int main(int argc, char *argv[])
 {
-/*
- * TODO : check the use of theses methods
- QCoreApplication::setOrganizationName(QSTR_DOMAIN);
- QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
- QCoreApplication::setApplicationName(QSTR_APPNAME);
- a.setWindowIcon(QIcon(":/px5deditor/px5deditor_32x32.png"));
-*/
-
 	QApplication a(argc, argv);
+	QCoreApplication::setOrganizationName(QString("Exp::Media"));
+	QCoreApplication::setOrganizationDomain("www.exp-media.com");
+	QCoreApplication::setApplicationName("PX5D Editor for Linux");
+	a.setWindowIcon(QIcon(":/px5de/data/px5d_32x32.png"));
+
 	MainWindow w;
+	Qt::WindowFlags flags = w.windowFlags();
+	flags |= Qt::WindowMinimizeButtonHint;
+	w.setWindowFlags(flags);
+	w.setFixedSize(860,512);
 	w.show();
 
 	return a.exec();
