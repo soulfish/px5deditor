@@ -40,6 +40,7 @@ const QEvent::Type PX5DModulationEventType = static_cast<QEvent::Type>(QEvent::U
 const QEvent::Type PX5DDelayEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_DELAY);
 const QEvent::Type PX5DReverbEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_REVERB);
 const QEvent::Type PX5DNoiseReductionEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_NOISE);
+const QEvent::Type PX5DNameChangeEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_NAME);
 
 /*
  * Event for propagating a program change event
@@ -336,5 +337,20 @@ protected:
 	unsigned int m_pMin;
 	unsigned int m_pMax;
 };
+
+/*
+ * Event for propagating a name change event
+ */
+class PX5DNameChangeEvent : public QEvent {
+public:
+	PX5DNameChangeEvent(const QString& newName) :
+		QEvent(static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_NAME)), m_name(newName) {}
+
+	QString getName() const { return m_name; }
+
+protected:
+	QString m_name;
+};
+
 
 #endif // EVENTS_H

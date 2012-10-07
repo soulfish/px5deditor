@@ -21,7 +21,6 @@
 
 PandoraPreset::PandoraPreset()
 {
-	name = "";
 	number = 0;
 	slot = PROGRAM_USER;
 }
@@ -32,30 +31,4 @@ PandoraPreset::PandoraPreset(const PandoraPreset& orig) {
 
 PandoraPreset::~PandoraPreset() {
 
-}
-
-/*
- * Translate a pandora character to an ascii character
- */
-char PandoraPreset::translatePandoraCharacter( const char px5char ) {
-	const std::string charTranslation = " /\"f$n&'><*+,-|/0123456789_,{=}?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]~";
-
-	// I could not find equivalent of these characters, I replaced them with similar:
-	// TODO: check out ASCII map
-	// 0x01 : broken /, mix of a low pipe and upper slash
-	// 0x03 : barred F
-	// 0x05 : sort of reversed N
-	// 0x0E : bottom half of |
-	// 0x1A : _ with overline
-	// 0x1B : , with overline
-	// 0x1C : strange triangle/arrow left
-	// 0x1E : strange triangle/arrow right
-	// 0x3E : ~ weird
-
-	//FIXME: Assert we're inside the translation string
-	if ( px5char < charTranslation.length() ) {
-		return charTranslation.at(px5char);
-	} else {
-		return '?';
-	}
 }

@@ -98,6 +98,8 @@ private slots:
 
 	void on_reverbBox_toggled(bool arg1);
 
+	void on_programName_textEdited(const QString &arg1);
+
 private:
 	Ui::MainWindow *ui;
 	AboutDialog *m_dlgAbout;

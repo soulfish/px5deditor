@@ -27,6 +27,7 @@
 #include "presetmodulation.h"
 #include "presetnoisereduction.h"
 #include "presetreverb.h"
+#include "presetname.h"
 
 using namespace std;
 
@@ -37,8 +38,6 @@ public:
 	PandoraPreset(const PandoraPreset& orig);
 	virtual ~PandoraPreset();
 
-	static char translatePandoraCharacter(const char c);
-
 	PresetDynamics dynamics;
 	PresetAmp amp;
 	PresetCabinet cabinet;
@@ -46,13 +45,13 @@ public:
 	PresetModulation modulation;
 	PresetNoiseReduction noiseReduction;
 	PresetReverb reverb;
+	PresetName name;
 
 	enum ProgramBank {
 		PROGRAM_FACTORY,
 		PROGRAM_USER
 	};
 
-	string name;
 	unsigned int number;
 	ProgramBank slot;
 

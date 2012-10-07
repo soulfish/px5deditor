@@ -12,6 +12,7 @@ TARGET = pandoraEditor
 TEMPLATE = app
 
 DEFINES += __LINUX_ALSA__
+DEFINES += DEBUG
 
 VERSION = 0.1.0-dev
 DEFINES += VERSION=$$VERSION
@@ -31,7 +32,8 @@ SOURCES += main.cpp\
     engine/presetreverb.cpp \
     engine/presetcabinet.cpp \
     aboutdialog.cpp \
-    px5dbridge.cpp
+    px5dbridge.cpp \
+    engine/presetname.cpp
 
 HEADERS  += mainwindow.h \
     engine/px5dcontroller.h \
@@ -51,7 +53,9 @@ HEADERS  += mainwindow.h \
     aboutdialog.h \
     constants.h \
     events.h \
-    px5dbridge.h
+    px5dbridge.h \
+    engine/presetname.h \
+    regexpucvalidator.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui

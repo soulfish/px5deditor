@@ -59,7 +59,15 @@ public:
 
 	PandoraPreset* Preset() { return &m_currentPreset; }
 
+	void setProgramName(const char* name, unsigned int size);
+
 	void SaveCurrentProgramToSlot(unsigned int slot);
+
+	unsigned int maxProgramNameSize();
+	char minProgramNameChar();
+	char maxProgramNameChar();
+
+	void sendProgramNameAsciiCharacter(const char c, unsigned int pos);
 
 private:
 	int m_pandoraInPort;

@@ -312,14 +312,10 @@ void Px5dController::decodeSysex(std::vector< unsigned char > *sysex )
 					which is identical to what is stored inside the preset files, except the ending 00 which are note store in files.
 			*/
 
-			//TODO: pass the message to a utility function "extractName"
-			string prgName = "";
-			for ( int i=7; i<7+7; i++ ) {
-				char c = sysex->at(i); //BUG!!
-				prgName += PandoraPreset::translatePandoraCharacter( c );
-			}
-
-			m_currentPreset.name = prgName;
+			vector<unsigned char>::const_iterator first = sysex->begin() + 7;
+			vector<unsigned char>::const_iterator last = sysex->begin() + 14;
+			vector<unsigned char> nameVector(first, last);
+			m_currentPreset.name.setFromSysex(nameVector);
 
 			// Decode preset parameters
 			//TODO: pass the message to a utility function "extractPresetSettings"
@@ -594,6 +590,7 @@ void Px5dController::decodeSysex(std::vector< unsigned char > *sysex )
 			notifyObservers(PX5D_UPDATE_AMP, m_currentPreset);
 		}
 
+		//					 f0 42 30 73 20  41 00 04 00 39 f7
 		// MIDDLE STEP:		(f0 42 30 73 20) 41 00 0f 00 NN f7
 		else if ( sysex->at(5)==0x41 && sysex->at(6)==0x00 && sysex->at(7)==0x0f ) {
 			int state = (int)sysex->at(9);
@@ -725,6 +722,29 @@ void Px5dController::decodeSysex(std::vector< unsigned char > *sysex )
 			m_currentPreset.noiseReduction.setParameter(state);
 			setChanged();
 			notifyObservers(PX5D_UPDATE_NOISE, m_currentPreset);
+		}
+
+		// Name changing
+		// BUG in the PX5D Firmware:
+		// Changing the cursor in the name edition / letter change
+		// Will lead to an extraneous "amp middle" sysex message
+		// f0 42 30 73 20 41 00 0f 00 CP f7
+		// CP: cursor pos, LT: letter
+
+		// Name Character update (f0 42 30 73 20) 41 00 PP 00 CC f7
+		// PP: position, CC: letter
+		else if ( sysex->at(5)==0x41 && sysex->at(6)==0x00 && sysex->at(8)==0x00 &&
+				  sysex->at(7)<=0x06 ) {
+			unsigned int charPos = sysex->at(7);
+			char pandoraChar = sysex->at(9);
+			char asciiChar = PresetName::translatePandoraCharacterToAscii(pandoraChar);
+
+#ifdef DEBUG
+			std::cout << "Editing character #" << charPos << " to value: " << asciiChar << std::endl;
+#endif
+			m_currentPreset.name.setLetterInName(charPos, asciiChar);
+			setChanged();
+			notifyObservers(PX5D_UPDATE_NAME, m_currentPreset);
 		}
 
 
@@ -1124,6 +1144,49 @@ void Px5dController::setParamChanged(PandoraNotification p, unsigned int v) {
 
 }
 
+void Px5dController::sendProgramNameAsciiCharacter(const char c, unsigned int pos) {
+
+	//NAME LETTER 1:		f0 42 30 73 20 41 00 PP 00 CC f7
+
+	if( pos>=PresetName::maxNameSize() ) {
+		return;
+	}
+
+	char fixedCharacter = c;
+	if ( c<PresetName::minNameAsciiChar() || c>PresetName::maxNameAsciiChar() ) {
+		fixedCharacter = '?';
+	}
+
+	fixedCharacter = PresetName::translateAsciiCharacterToPandora(fixedCharacter);
+
+	std::vector<unsigned char> message;
+	fillPandoraSysexHeader(&message);
+	message.push_back( 0x41 );
+	message.push_back( 0x00 );
+	message.push_back( pos );
+	message.push_back( 0x00 );
+	message.push_back( fixedCharacter );
+	message.push_back( 0xf7 );
+	sendSysex( &message, "program name change" );
+}
+
+void Px5dController::setProgramName(const char* name, unsigned int size) {
+
+	// Store internal string value
+	m_currentPreset.name.setFromString(name);
+
+	// Prepare for sysex call
+	for ( unsigned int i=0; i<size && i<PresetName::maxNameSize(); i++ ) {
+		sendProgramNameAsciiCharacter(name[i], i);
+	}
+
+	// pad with spaces
+	for ( unsigned int i=0; i<(PresetName::maxNameSize()-size); i++) {
+		sendProgramNameAsciiCharacter(' ', i+size);
+	}
+
+}
+
 
 void Px5dController::SaveCurrentProgramToSlot(unsigned int slot) {
 
@@ -1154,6 +1217,18 @@ void Px5dController::sendSysex(std::vector< unsigned char > *message, std::strin
 #endif
 
 	m_midiOut->sendMessage(message);
+}
+
+unsigned int Px5dController::maxProgramNameSize() {
+	return m_currentPreset.name.maxNameSize();
+}
+
+char Px5dController::minProgramNameChar() {
+	return m_currentPreset.name.minNameAsciiChar();
+}
+
+char Px5dController::maxProgramNameChar() {
+	return m_currentPreset.name.maxNameAsciiChar();
 }
 
 

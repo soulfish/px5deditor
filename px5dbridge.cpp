@@ -57,7 +57,7 @@ void PX5DBridge::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 	if ( bitflag==PX5D_UPDATE_ALL ) {
 		qDebug() << " got program update call ";
 
-		ev = new PX5DProgramEvent( p.number, QString(p.name.c_str()), p.slot );
+		ev = new PX5DProgramEvent( p.number, QString(p.name.getAsciiName().c_str()), p.slot );
 		QApplication::postEvent(m_parent, ev);
 	}
 
@@ -197,7 +197,17 @@ void PX5DBridge::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 				 p.noiseReduction.getMaxParam()
 			 );
 		QApplication::postEvent(m_parent, ev);
-
 	}
+
+	if ( bitflag&PX5D_UPDATE_NAME ) {
+
+		qDebug() << " got name update call : " << p.name.getAsciiName().c_str();
+
+		ev = new PX5DNameChangeEvent(
+				 QString(p.name.getAsciiName().c_str())
+		);
+		QApplication::postEvent(m_parent, ev);
+	}
+
 
 }

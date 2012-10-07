@@ -23,10 +23,13 @@
 #include <QString>
 #include <QMessageBox>
 #include <QDebug>
+#include <QValidator>
+
 #include "engine/presetparameters.h"
 #include "events.h"
 #include "aboutdialog.h"
 #include "constants.h"
+#include "regexpucvalidator.h"
 #include <sys/utsname.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -68,6 +71,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	// FIXME: set wheelScrollLines(1) for all Dials !!!
 	// FIXME: disable scroll wheel on program number
+
+	// Setup program name line edit
+	ui->programName->setMaxLength( bridge.controller()->maxProgramNameSize() );
+
+	// NOTE: we should grab the rexexp from the PX5D library, would be cleaner
+	QRegExp px5dNameRegexp( QString("[ -\\^]{0,7}"), Qt::CaseInsensitive);
+	QValidator *validator = new RegExpUCValidator(px5dNameRegexp, this);
+	ui->programName->setValidator(validator);
+
 }
 
 MainWindow::~MainWindow() {
@@ -545,6 +557,12 @@ void MainWindow::customEvent( QEvent *event )
 		ui->noiseReductionParamDial->setMinimum( ev->getMinParam() );
 		ui->noiseReductionParamDial->setMaximum( ev->getMaxParam() );
 		ui->noiseReductionParamDial->setValue( ev->getParameter() );
+	}
+
+	else if ( event->type() == PX5DNameChangeEventType ) {
+
+		PX5DNameChangeEvent *ev = static_cast<PX5DNameChangeEvent*>(event);
+		ui->programName->setText(ev->getName());
 
 	} else {
 		qDebug() << "UNKNOWN EVENT TYPE " << event->type();
@@ -552,4 +570,11 @@ void MainWindow::customEvent( QEvent *event )
 
 	event->accept();
 
+}
+
+void MainWindow::on_programName_textEdited(const QString &name) {
+	// called when field changed by user input only
+	qDebug() << "Program name changed: " << name;
+
+	bridge.controller()->setProgramName(name.toAscii().data(), name.toAscii().size() );
 }

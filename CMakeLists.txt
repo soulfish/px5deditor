@@ -62,6 +62,7 @@ set( PX5DE_SRCS
   ./engine/px5dcontroller.cpp
   ./engine/pandorapreset.cpp
   ./engine/presetdelay.cpp
+  ./engine/presetname.cpp
   ./engine/presetnoisereduction.cpp
 )
 
@@ -69,6 +70,7 @@ set( PX5DE_SRCS
 set( PX5DE_MOC_HDRS
   ./mainwindow.h
   ./aboutdialog.h
+  ./regexpucvalidator.h
 )
 # dialogs
 set( PX5DE_UIS
