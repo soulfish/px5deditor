@@ -23,43 +23,43 @@
 
 const PresetAmp::AmpDef PresetAmp::Amps[PresetAmp::END] =  {
 
-	{BTQCLN, "Btq Cln", "Boutique Clean" },
-	{BTQOD, "Btq Od", "Boutique Overdrive" },
-	{TWD1X12,"Twd1x12", "Tweed 1x12" },
-	{TWD4X10, "Twd4x10", "Tweed 4x10" },
-	{BLK2X12, "Blk2x12", "Black 2x12" },
-	{AC15, "Ac15", "Ac 15" },
-	{AC15TB, "Ac15tb", "Ac 15 TB" },
-	{AC30, "Ac30", "Ac 30" },
-	{AC30TB, "Ac30tb", "Ac 30 TB" },
-	{UKBLUES, "Ukblues", "UK Blues" },
-	{UK70S,"Uk‚70s", "UK '70s" },
-	{UK80S,"Uk‚80s", "UK '80s" },
-	{UK90S,"Uk‚90s", "UK '90s" },
-	{UKMDN,"Uk Mdn", "Uk Modern" },
-	{USHIG,"Us Hi-G", "Us High Gain" },
-	{USMDN,"Us Mdn", "Us Modern" },
-	{FUZZ,"Fuzz", "Fuzz" },
-	{OCTFUZZ,"Octfuzz", "Octa Fuzz" },
+	{BTQCLN, "Btq Cln", "Boutique Clean", "Custom 100-Watt amp, Clean Channel"  },
+	{BTQOD, "Btq Od", "Boutique Overdrive" , "Custom 100-Watt amp, Overdrive Channel"},
+	{TWD1X12,"Twd1x12", "Tweed 1x12", "Fender Combo" },
+	{TWD4X10, "Twd4x10", "Tweed 4x10", "Fender Combo, design for bass" },
+	{BLK2X12, "Blk2x12", "Black 2x12 Combo","Good for Jazz/Blues" },
+	{AC15, "Ac15", "AC15", "Vox AC15 from 1962" },
+	{AC15TB, "Ac15tb", "AC15TB", "Vox AC15TB, Brilliant Channel" },
+	{AC30, "Ac30", "AC30", "Vox AC30" },
+	{AC30TB, "Ac30tb", "AC30TB", "Vox AC30TB, Brilliant Channel"},
+	{UKBLUES, "Ukblues", "UK Blues", "Marshall Vintage Head"},
+	{UK70S,"Uk‚70s", "UK '70s", "Marshall High Treble Channel, 1969" },
+	{UK80S,"Uk‚80s", "UK '80s", "Marshall with Master Volume, 1983" },
+	{UK90S,"Uk‚90s", "UK '90s", "Marshall Lead Channel, 90's amp'" },
+	{UKMDN,"Uk Mdn", "UK Modern", "Marshall Modern" },
+	{USHIG,"Us Hi-G", "US High Gain", "Soldano Snakeskin, 1991" },
+	{USMDN,"Us Mdn", "US Modern", "Mesa Boogie" },
+	{FUZZ,"Fuzz", "Fuzz", "Vintage 60's Fuzz" },
+	{OCTFUZZ,"Octfuzz", "Octa Fuzz", "Emphasizes high notes" },
 
-	{VALVE1,"Valve1", "(bass) Valve 1" },
-	{VALVE2,"Valve2", "(bass) Valve 2" },
-	{CLASSIC,"Classic", "(bass) Classic" },
-	{SCOOPED,"Scooped", "(bass) Scooped" },
-	{LASTUD,"La Stud", "(bass) L.A. Studio" },
-	{GOLDPNL,"Goldpnl", "(bass) Gold Panel" },
-	{JAZZ,"Jazz", "(bass) Jazz" },
+	{VALVE1,"Valve1", "Valve 1", "Tube bass amp with Ultra-Lo on" },
+	{VALVE2,"Valve2", "Valve 2", "Tube bass amp for rock" },
+	{CLASSIC,"Classic", "Classic", "Versatile tube bass amp" },
+	{SCOOPED,"Scooped", "Scooped", "Bass amp from the 80's" },
+	{LASTUD,"La Stud", "L.A. Studio", "Bass amp, L.A. Sound" },
+	{GOLDPNL,"Goldpnl", "Gold Panel", "Bass amp, Eden Traveller" },
+	{JAZZ,"Jazz", "Jazz", "Combo bass amp" },
 
-	{STUDIO,"Studio", "(bass) Studio" },
-	{AC100,"Ac100", "(bass) Ac100" },
-	{UKMAJOR,"Ukmajor", "(bass) UK Major" },
+	{STUDIO,"Studio", "Studio", "Tube combo bass amp" },
+	{AC100,"Ac100", "AC100", "Vox AC100 Tube amp" },
+	{UKMAJOR,"Ukmajor", "UK Major", "Marshall 200-Watt Tube bass amp" },
 
-	{GSYNTH1,"Gsynth1", "(synth) Gsynth1" },
-	{GSYNTH2,"Gsynth2", "(synth) Gsynth2" },
-	{GSYNTH3,"Gsynth3", "(synth) Gsynth3" },
-	{BSYNTH1,"Bsynth1", "(bass synth) Bsynth1" },
-	{BSYNTH2,"Bsynth2", "(bass synth) Bsynth2" },
-	{BSYNTH3,"Bsynth3", "(bass synth) Bsynth3" },
+	{GSYNTH1,"Gsynth1", "Guitar Synth Variation 1", "(better with Cabinet off)" },
+	{GSYNTH2,"Gsynth2", "Guitar Synth Variation 2", "(better with Cabinet off)" },
+	{GSYNTH3,"Gsynth3", "Guitar Synth Variation 3", "(better with Cabinet off)" },
+	{BSYNTH1,"Bsynth1", "Bass Synth Variation 1", "(better with Cabinet off)" },
+	{BSYNTH2,"Bsynth2", "Bass Synth Variation 2", "(better with Cabinet off)" },
+	{BSYNTH3,"Bsynth3", "Bass Synth Variation 3", "(better with Cabinet off)" },
 
 };
 
@@ -102,10 +102,10 @@ const char* PresetAmp::synthDepthValues[] = {
  "-1 SIN2", "SAW2", "SIN2", "+1 SAW2", "+1 SIN2", "+2 SIN2"
  */
 const char* PresetAmp::synthWaveValues[] = {
-	"0", "1", "2", "3", "4",
-	"5", "6", "7", "8", "9",
-	"10", "11", "12", "13", "14",
-	"15"
+	"Sawtooth -2oct", "Sawtooth -1oct", "Sine -1oct", "Sawtooth", "Sine",
+	"Sawtooth +1oct", "Sine +1oct", "Sine +2oct",
+	"Porta Sawtooth -2oct", "Porta Sawtooth -1oct", "Porta Sine -1oct", "Porta Sawtooth", "Porta Sine",
+	"Porta Sawtooth +1oct", "Porta Sine +1oct",	"Porta Sine +2oct"
 };
 
 

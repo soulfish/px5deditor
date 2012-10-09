@@ -107,6 +107,7 @@ private:
 
 	PX5DBridge bridge;
 	void updateParamTextValue(PandoraNotification p, unsigned int v);
+	bool eventFilter(QObject *obj, QEvent *event);
 
 protected:
 	void customEvent( QEvent *event );

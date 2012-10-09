@@ -1,8 +1,9 @@
 
-Frédéric Jaume <dev@exp-media.com>
+PX5D Library and GUI:
+    Frédéric Jaume <dev@exp-media.com>
+
 
 Other copyright owners:
-
     Gary P. Scavone     RtMIDI classes
         src/RtError.h
         src/RtMidi.h

@@ -48,7 +48,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	}
 
 	for ( int i=PresetAmp::BTQCLN; i<PresetAmp::END; ++i ) {
-		ui->ampType->addItem( QString( PresetAmp::Amps[i].fullName.c_str() ) );
+
+		QString ampEntry = QString( PresetAmp::Amps[i].fullName.c_str() );
+		ampEntry += QString(" (") + QString(PresetAmp::Amps[i].description.c_str() )+ QString(")");
+		ui->ampType->addItem( ampEntry );
 	}
 
 	for ( int i=PresetCabinet::TWEED1x8; i<PresetCabinet::END; ++i ) {
@@ -69,8 +72,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//ui->noiseReductionParamName->setText( QString( m_px5dController->Preset()->noiseReduction.getParamName()) );
 
-	// FIXME: set wheelScrollLines(1) for all Dials !!!
-	// FIXME: disable scroll wheel on program number
+	// set wheelScrollLines to 1, better for qdials!
+	QApplication::setWheelScrollLines(1);
 
 	// Setup program name line edit
 	ui->programName->setMaxLength( bridge.controller()->maxProgramNameSize() );
@@ -96,11 +99,13 @@ MainWindow::MainWindow(QWidget *parent) :
 					"  X  Y  Z  [  \  ]  ^ [SPACE]"
 					"</pre>"
 					"</li>"
-					"Warning: there is a bug in the PX5D firmware, if you change the "
-					"cursor position on the unit, it will change the Amp Middle value too."
-
+					"<i>There might be a bug in some firmware versions for the PX5D: if you change the "
+					"cursor position when editing program name on the unit, it will change the Amp Middle value too.</i>"
 					"</ul>"
 					));
+
+	// disable scroll wheel on program number
+	ui->programNumber->installEventFilter(this);
 
 }
 
@@ -108,6 +113,12 @@ MainWindow::~MainWindow() {
 	delete ui;
 }
 
+bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
+	if(event->type() == QEvent::Wheel && obj == ui->programNumber) {
+		return true;
+	}
+	return false;
+}
 
 void MainWindow::on_connectToPandora_released()
 {

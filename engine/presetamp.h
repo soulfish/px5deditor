@@ -105,6 +105,7 @@ public:
 		AmpTypes index;
 		string name;
 		string fullName;
+		string description;
 	};
 	static const AmpDef Amps[END];
 

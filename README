@@ -37,7 +37,7 @@ This software is currently not supported/endorsed by KORG.
 Know bugs:
 ==========
 
-- There is a bug in the PX5D firmware that triggers a "amp middle" message
+- There might be a bug in some firmware version of the PX5D that triggers a "amp middle" message
 when the user is in "name edition" mode on the unit. Changing the cursor 
 parameter will lead to an "amp middle" change too, which is a bug present
 on the Windows editor too.
@@ -45,13 +45,13 @@ on the Windows editor too.
 Specials thanks:
 ================
 
- * Palmer, for testing
+ * Palmer COLAMARINO: for testing!
  * Pedro Lopez-Cabanillas: your VMPK project was an incredible source of information
    to build this project!
 
 
 --
 Frédéric Jaume <dev@exp-media.com>
-September 2012
+October 2012
 
 

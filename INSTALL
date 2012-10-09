@@ -16,7 +16,7 @@ To build and install the project, from this directory, follow these steps in a t
 You can choose another install prefix, but this one is recommended for correct setup of
 menu entry and man page.
 
-Then, as root:
+Then, as root (system admin or sudo):
 
   make install
 
