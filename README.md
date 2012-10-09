@@ -93,7 +93,7 @@ of both previous commands as well as info about your distribution, which might h
 Screenshot
 ----------
 
-!["PX5D Editor Screenshot"](http://www.exp-media.com/sites/default/files/pandora/snapshot_20120930-alpha-small.jpeg "PX5D Editor Screenshot")
+!["PX5D Editor Screenshot"](http://www.exp-media.com/sites/default/files/pandora/snapshot_20121009_s.jpeg "PX5D Editor Screenshot")
 
 
 Current Status
