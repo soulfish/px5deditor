@@ -69,7 +69,15 @@ OTHER_FILES += \
     notes.txt \
     TODO.txt \
     CMakeLists.txt \
-    px5de_desktop.sh
+    px5de_desktop.sh \
+    px5de_man.sh \
+    TODO \
+    README.md \
+    README \
+    INSTALL \
+    COPYING \
+    CHANGELOG \
+    AUTHORS
 
 RESOURCES += \
     px5deditor.qrc
