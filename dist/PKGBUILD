@@ -1,0 +1,62 @@
+# Maintainer: Frédéric JAUME <dev@exp-media.com>
+pkgname=px5deditor-git
+pkgver=20121010
+pkgrel=1
+pkgdesc="A preset editor with GUI for the Korg Pandora PX5D"
+arch=(i686 x86_64)
+url="http://www.exp-media.com/px5d_editor_linux"
+license=('GPL3')
+groups=()
+depends=('qt')
+makedepends=('git' 'cmake')
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+noextract=()
+#md5sums=() #generate with 'makepkg -g'
+
+# git clone https://github.com/soulfish/px5deditor.git --depth=1
+
+_gitroot="git://github.com/soulfish/px5deditor.git"
+_gitname="px5deditor"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+#    git clone "$_gitroot" "$_gitname"
+    git clone "$_gitroot" "$_gitname" --branch branch_name
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build" --branch branch_name
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+
+  # prepare build dir
+  [ -d build ] || mkdir build && cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_BUILD_TYPE=release
+ # make
+}
+
+package() {
+  cd "$srcdir/$_gitname-build/build"
+  make DESTDIR="$pkgdir/" install
+}
+
+# vim:set ts=2 sw=2 et:
