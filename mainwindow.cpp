@@ -170,6 +170,9 @@ void MainWindow::on_programBankUser_clicked() {
 
 void MainWindow::on_ampType_activated(int v) {
 	bridge.controller()->setParamChanged( PX5D_MODULE_AMP_TYPE, v );
+
+
+
 }
 
 void MainWindow::on_ampParamDial1_valueChanged(int v) {
@@ -416,11 +419,22 @@ void MainWindow::customEvent( QEvent *event )
 		PX5DDynamicsEvent *ev = static_cast<PX5DDynamicsEvent*>(event);
 
 		ui->dynamicsBox->setChecked( ev->getEnabled() );
-		if ( ev->getEffect() != ui->dynamicsType->currentIndex() &&
+
+		//NOTE: this and other tests alike seem un-necessary, as it does
+		//not cost much to update the text value of the parameters and is
+		//indeed required when for instance you switch from a standard amp
+		//to a synth program where the parameter values are "sin", "saw"
+		//instead of "0.3", "0.7". Update is needed even if internal
+		//value of the parameter has not changed.
+		//This is also triggered by the "ACK" sysex which leads to an
+		//update to be sure we have the correct values here on effect type change.
+
+		/* if ( ev->getEffect() != ui->dynamicsType->currentIndex() &&
 			 (int)ev->getParameter() == ui->dynamicsParamDial->value() ) {
-			// if effect changed, but param did not, force param value update!
 			updateParamTextValue(PX5D_MODULE_DYN_PARAM, ev->getParameter());
-		}
+		} */
+		updateParamTextValue(PX5D_MODULE_DYN_PARAM, ev->getParameter());
+
 		ui->dynamicsType->setCurrentIndex( ev->getEffect() );
 		ui->dynamicsParamName->setText( ev->getParamName() );
 		ui->dynamicsParamDial->setMinimum( ev->getMinParam() );
@@ -437,6 +451,7 @@ void MainWindow::customEvent( QEvent *event )
 
 		ui->amplifierBox->setChecked(ev->getEnabled());
 
+		/*
 		if ( ev->getModel() != ui->ampType->currentIndex() ) {
 			if ( (int)ev->getGain() == ui->ampParamDial1->value() ) {
 				updateParamTextValue(PX5D_MODULE_AMP_PARAM1, ev->getGain());
@@ -453,7 +468,12 @@ void MainWindow::customEvent( QEvent *event )
 			if ( (int)ev->getMiddle() == ui->ampParamDial5->value() ) {
 				updateParamTextValue(PX5D_MODULE_AMP_PARAM5, ev->getMiddle());
 			}
-		}
+		}*/
+		updateParamTextValue(PX5D_MODULE_AMP_PARAM1, ev->getGain());
+		updateParamTextValue(PX5D_MODULE_AMP_PARAM2, ev->getBass());
+		updateParamTextValue(PX5D_MODULE_AMP_PARAM3, ev->getTreble());
+		updateParamTextValue(PX5D_MODULE_AMP_PARAM4, ev->getVolume());
+		updateParamTextValue(PX5D_MODULE_AMP_PARAM5, ev->getMiddle());
 
 		ui->ampType->setCurrentIndex( ev->getModel() );
 
@@ -506,10 +526,11 @@ void MainWindow::customEvent( QEvent *event )
 
 		ui->cabinetBox->setChecked(ev->getEnabled());
 
-		if ( ev->getCabinet() != ui->cabinetType->currentIndex() &&
+		/*  if ( ev->getCabinet() != ui->cabinetType->currentIndex() &&
 			 (int)ev->getParameter() == ui->cabinetParamDial->value() ) {
 			updateParamTextValue(PX5D_MODULE_CAB_PARAM, ev->getParameter());
-		}
+		} */
+		updateParamTextValue(PX5D_MODULE_CAB_PARAM, ev->getParameter());
 
 		ui->cabinetType->setCurrentIndex( ev->getCabinet() );
 		ui->cabinetParamName->setText( ev->getParamName() );
@@ -525,10 +546,11 @@ void MainWindow::customEvent( QEvent *event )
 
 		ui->modulationBox->setChecked(ev->getEnabled());
 
-		if ( ev->getModulation() != ui->modulationType->currentIndex() &&
+		/*if ( ev->getModulation() != ui->modulationType->currentIndex() &&
 			 (int)ev->getParameter() == ui->modulationParamDial->value() ) {
 			updateParamTextValue(PX5D_MODULE_MOD_PARAM, ev->getParameter());
-		}
+		} */
+		updateParamTextValue(PX5D_MODULE_MOD_PARAM, ev->getParameter());
 
 		ui->modulationType->setCurrentIndex( ev->getModulation() );
 		ui->modulationParamName->setText( ev->getParamName() );
@@ -543,6 +565,7 @@ void MainWindow::customEvent( QEvent *event )
 
 		ui->delayBox->setChecked(ev->getEnabled());
 
+		/*
 		if (  ev->getDelay() != ui->delayType->currentIndex() ) {
 			if ( (int)ev->getParameter1() == ui->delayParamDial->value() ) {
 				updateParamTextValue(PX5D_MODULE_DELAY_PARAM1, ev->getParameter1());
@@ -550,7 +573,9 @@ void MainWindow::customEvent( QEvent *event )
 			if ( (int)ev->getParameter2() == ui->delayParamDial2->value() ) {
 				updateParamTextValue(PX5D_MODULE_DELAY_PARAM2, ev->getParameter2());
 			}
-		}
+		}*/
+		updateParamTextValue(PX5D_MODULE_DELAY_PARAM1, ev->getParameter1());
+		updateParamTextValue(PX5D_MODULE_DELAY_PARAM2, ev->getParameter2());
 
 		ui->delayType->setCurrentIndex( ev->getDelay() );
 		ui->delayParamName->setText( ev->getParam1Name() );
@@ -571,10 +596,12 @@ void MainWindow::customEvent( QEvent *event )
 
 		ui->reverbBox->setChecked(ev->getEnabled());
 
+		/*
 		if ( ev->getReverb() != ui->reverbType->currentIndex() &&
 			 (int)ev->getParameter() == ui->reverbParamDial->value() ) {
 			updateParamTextValue(PX5D_MODULE_REVERB_PARAM, ev->getParameter());
-		}
+		}*/
+		updateParamTextValue(PX5D_MODULE_REVERB_PARAM, ev->getParameter());
 
 		ui->reverbType->setCurrentIndex( ev->getReverb() );
 		ui->reverbParamName->setText( ev->getParamName() );

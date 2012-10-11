@@ -102,10 +102,10 @@ const char* PresetAmp::synthDepthValues[] = {
  "-1 SIN2", "SAW2", "SIN2", "+1 SAW2", "+1 SIN2", "+2 SIN2"
  */
 const char* PresetAmp::synthWaveValues[] = {
-	"Sawtooth -2oct", "Sawtooth -1oct", "Sine -1oct", "Sawtooth", "Sine",
-	"Sawtooth +1oct", "Sine +1oct", "Sine +2oct",
-	"Porta Sawtooth -2oct", "Porta Sawtooth -1oct", "Porta Sine -1oct", "Porta Sawtooth", "Porta Sine",
-	"Porta Sawtooth +1oct", "Porta Sine +1oct",	"Porta Sine +2oct"
+	"Saw -2", "Saw -1", "Sin -1", "Saw", "Sin",
+	"Saw +1", "Sin +1", "Sin +2",
+	"PSaw -2", "PSaw -1", "PSin -1", "PSaw", "PSin",
+	"PSaw +1", "PSin +1", "PSin +2"
 };
 
 

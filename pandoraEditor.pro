@@ -77,7 +77,8 @@ OTHER_FILES += \
     INSTALL \
     COPYING \
     CHANGELOG \
-    AUTHORS
+    AUTHORS \
+    dist/PKGBUILD
 
 RESOURCES += \
     px5deditor.qrc

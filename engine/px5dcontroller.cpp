@@ -225,9 +225,6 @@ void Px5dController::decodeSysex(std::vector< unsigned char > *sysex )
 #ifdef DEBUG
 	std::cout << "Decoding SysEx from Pandora... " << std::endl;
 #endif
-	// TODO: pandora sends f0 42 30 73 20 23 f7
-	// after a program change request ... why ?
-	// and other commands : is it a "operation success" reply ?
 
 	//TO Implement:
 	// Enter Edit Mode: f0 42 30 73 20 4e 43 0b f7
@@ -265,13 +262,30 @@ void Px5dController::decodeSysex(std::vector< unsigned char > *sysex )
 			  sysex->at(3)==0x73 &&
 			  sysex->at(4)==0x20 ) {
 
+		// Pandora "ACK" (f0 42 30 73 20) 23 f7
+		// The unit sends f0 42 30 73 20 23 f7
+		// when it has done processing a request.
+		// Some commands can trigger multiple sysex sends from the unit,
+		// e.g. when changing amp types, the unit sends corrected values
+		// for the parameters.
+		// When all has been sent, we receive this ACK code.
+		// TODO: handle this better (Issue #26) by queuing orders
+		// and sending only one update.
+		if ( sysex->at(5)==0x23 && sysex->at(6)==0xf7  ) {
+
+#ifdef DEBUG
+			std::cout << "Pandora ACK" << std::endl;
+#endif
+			setChanged();
+			notifyObservers(PX5D_UPDATE_ALL, m_currentPreset);
+		}
 
 		// CURRENT PROGRAM QUERY answer
 		// Sent from the Pandora after we asked the current program number
 
 		// (f0 42 30 73 20) 42 50 XX 0f 00 f7 (default P)
 		// (f0 42 30 73 20) 42 40 XX 0f 00 f7 (user U)
-		if ( sysex->at(5)==0x42 &&
+		else if ( sysex->at(5)==0x42 &&
 			 (sysex->at(6)==0x40 || sysex->at(6)==0x50 ) &&
 			 sysex->at(8)==0x0f &&
 			 sysex->at(9)==0x00 &&
