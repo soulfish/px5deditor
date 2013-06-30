@@ -4,7 +4,7 @@ Main features missing (implemented soon):
 
 * View & Dump of all presets in the unit. This is the most important feature
 that shall be added to the next version. Currently the editor only shows the
-current preset, allows to switch preset, but we have no global view of all the 
+current preset, allows to switch preset, but we have no global view of all the
 presets.
 
 * Load & Save. Saving is implemented only on the current preset slot on the

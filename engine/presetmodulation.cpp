@@ -17,6 +17,7 @@
 */
 
 #include "presetmodulation.h"
+#include <sstream>
 
 #define SIZEOF_ARRAY( a ) (sizeof( a ) / sizeof( a[ 0 ] ))
 
@@ -223,7 +224,7 @@ bool PresetModulation::setModulation(ModulationTypes mod) {
 	return effect==mod;
 }
 
-const char* PresetModulation::getParamName() {
+const char* PresetModulation::getParamName() const {
 	return Modulations[effect].paramName.c_str();
 }
 
@@ -294,5 +295,13 @@ unsigned int PresetModulation::validateParameter(unsigned int value) {
 		return value;
 	}
 }
+
+std::string PresetModulation::toString() const {
+	std::stringstream ss;
+	ss << (on?"ON":"OFF") << " FX=" << Modulations[effect].fullName << ", " ;
+	ss << getParamName() << "= " << param;
+	return ss.str();
+}
+
 
 

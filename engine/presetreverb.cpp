@@ -16,6 +16,7 @@
 	with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 #include "presetreverb.h"
+#include <sstream>
 
 #define SIZEOF_ARRAY( a ) (sizeof( a ) / sizeof( a[ 0 ] ))
 
@@ -68,7 +69,7 @@ bool PresetReverb::setParameter(unsigned int p) {
 	return fxLevel==p;
 }
 
-const char* PresetReverb::getParamName() {
+const char* PresetReverb::getParamName() const {
 	return "Effect Level";
 }
 
@@ -103,3 +104,12 @@ unsigned int PresetReverb::validateParameter(unsigned int value) {
 		return value;
 	}
 }
+
+std::string PresetReverb::toString() const {
+
+	std::stringstream ss;
+	ss << (on?"ON":"OFF") << " FX=" << Reverbs[type].fullName << ", " ;
+	ss << getParamName() << "= " << fxLevel;
+	return ss.str();
+}
+

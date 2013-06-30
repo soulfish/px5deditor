@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui declarative
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,7 +14,7 @@ TEMPLATE = app
 DEFINES += __LINUX_ALSA__
 DEFINES += DEBUG
 
-VERSION = 0.1.0
+VERSION = 0.2.0
 DEFINES += VERSION=$$VERSION
 
 SOURCES += main.cpp\
@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     engine/presetcabinet.cpp \
     aboutdialog.cpp \
     px5dbridge.cpp \
-    engine/presetname.cpp
+    engine/presetname.cpp \
+    engine/presetreader.cpp
 
 HEADERS  += mainwindow.h \
     engine/px5dcontroller.h \
@@ -55,7 +56,8 @@ HEADERS  += mainwindow.h \
     events.h \
     px5dbridge.h \
     engine/presetname.h \
-    regexpucvalidator.h
+    regexpucvalidator.h \
+    engine/presetreader.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui
@@ -78,7 +80,8 @@ OTHER_FILES += \
     COPYING \
     CHANGELOG \
     AUTHORS \
-    dist/PKGBUILD
+    dist/PKGBUILD \
+    TODO_local.txt
 
 RESOURCES += \
     px5deditor.qrc

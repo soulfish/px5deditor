@@ -18,6 +18,8 @@
 
 #include "presetcabinet.h"
 
+#include <sstream>
+
 #define SIZEOF_ARRAY( a ) (sizeof( a ) / sizeof( a[ 0 ] ))
 
 const char* PresetCabinet::commonValues[] = {
@@ -106,7 +108,7 @@ bool PresetCabinet::setParameter(unsigned int p) {
 	return presence==p;
 }
 
-const char* PresetCabinet::getParamName() {
+const char* PresetCabinet::getParamName() const {
 	return "Presence";
 }
 
@@ -117,3 +119,12 @@ unsigned int PresetCabinet::getMinParam() {
 unsigned int PresetCabinet::getMaxParam() {
 	return 0x1e;
 }
+
+std::string PresetCabinet::toString() const {
+
+	std::stringstream ss;
+	ss << (on?"ON":"OFF") << " FX=" << Cabs[model].fullName << ", " ;
+	ss << getParamName() << "= " << presence;
+	return ss.str();
+}
+

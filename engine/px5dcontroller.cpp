@@ -280,6 +280,23 @@ void Px5dController::decodeSysex(std::vector< unsigned char > *sysex )
 			notifyObservers(PX5D_UPDATE_ALL, m_currentPreset);
 		}
 
+
+		// SEND FULL DUMP:
+		// (F0 42 30 73 20) 50 00 [DUMP DATA: 4137 bytes] F7	 (total 4145 bytes)
+		else if ( sysex->at(5)==0x50 && sysex->at(6)==0x00 ) {
+#ifdef DEBUG
+			std::cout << "Pandora Midi Dump : " << sysex->size() << std::endl;
+#endif
+			decodeMidiDump(sysex);
+
+			for ( unsigned int i=0; i<m_userPresets.size(); ++i ) {
+				setChanged();
+				notifyObservers(PX5D_UPDATE_MIDIDUMP, m_userPresets[i]);
+			}
+			setChanged();
+			notifyObservers(PX5D_UPDATE_MIDIDUMP_COMPLETE);
+		}
+
 		// CURRENT PROGRAM QUERY answer
 		// Sent from the Pandora after we asked the current program number
 
@@ -816,15 +833,14 @@ void Px5dController::requestCurrentProgram()
  **/
 void Px5dController::requestFullDump()
 {
-	// ???? même code que current program number
-	//char sysex[7] = { 0xf0, 0x42, 0x30, 0x73, 0x20, 0x12, 0xf7 };
-	/*
+	// 	f0 42 30 73 20 0f f7
+
+	// anciennes infos: char sysex[7] = { 0xf0, 0x42, 0x30, 0x73, 0x20, 0x12, 0xf7 };
 	std::vector<unsigned char> message;
 	fillPandoraSysexHeader(&message);
-	message.push_back( 0x12 );
+	message.push_back( 0x0f );
 	message.push_back( 0xf7 );
-	sendSysex( &message );
-	*/
+	sendSysex( &message, "requesting full dump..." );
 
 }
 
@@ -1202,7 +1218,7 @@ void Px5dController::setProgramName(const char* name, unsigned int size) {
 }
 
 
-void Px5dController::SaveCurrentProgramToSlot(unsigned int slot) {
+void Px5dController::saveCurrentProgramToSlot(unsigned int slot) {
 
 	// WRITE PROGRAM N:	(f0 42 30 73 20) 11 00 NN f7
 	std::vector<unsigned char> message;
@@ -1213,6 +1229,7 @@ void Px5dController::SaveCurrentProgramToSlot(unsigned int slot) {
 	message.push_back( 0xf7 );
 	sendSysex( &message, "save program" );
 }
+
 
 /*
  * Send a sysex message to Pandora
@@ -1245,6 +1262,125 @@ char Px5dController::maxProgramNameChar() {
 	return m_currentPreset.name.maxNameAsciiChar();
 }
 
+void Px5dController::decodeProgramBin(std::vector< unsigned char > &sysex, unsigned int bc, PandoraPreset &prog) {
+
+	//--- Name: 7 bytes
+	std::vector<unsigned char> name;
+	for ( unsigned int i=0; i<7; i++ ) {
+		name.push_back( sysex.at(bc++) );
+	}
+	prog.name.setFromSysex(name);
+
+	// -- Program data: 19 bytes
+	unsigned char EFFECTS_BITFLAG = sysex.at(bc++);
+	unsigned char DYN_TYPE = sysex.at(bc++);
+	unsigned char AMP_MODEL = sysex.at(bc++);
+	unsigned char CAB_MODEL = sysex.at(bc++);
+	unsigned char MOD_TYPE = sysex.at(bc++);
+	unsigned char DELAY_TYPE = sysex.at(bc++);
+	unsigned char REVERB_TYPE = sysex.at(bc++);
+	unsigned char DYN_VALUE = sysex.at(bc++);
+	unsigned char EQ_MIDDLE = sysex.at(bc++);
+	unsigned char EQ_PRESENCE = sysex.at(bc++);
+	unsigned char MOD_VALUE = sysex.at(bc++);
+	unsigned char DELAY_FX = sysex.at(bc++);
+	unsigned char DELAY_TIME = sysex.at(bc++);
+	unsigned char REVERB_LEVEL = sysex.at(bc++);
+	unsigned char AMP_GAIN = sysex.at(bc++);
+	unsigned char AMP_BASS = sysex.at(bc++);
+	unsigned char AMP_TREBLE = sysex.at(bc++);
+	unsigned char AMP_VOLUME = sysex.at(bc++);
+	unsigned char NOISE_REDUCTION = sysex.at(bc++);
+
+	prog.dynamics.enable( EFFECTS_BITFLAG & PX5D_SYSEX_SWITCH_DYN );
+	prog.amp.enable( EFFECTS_BITFLAG & PX5D_SYSEX_SWITCH_AMP);
+	prog.cabinet.enable( EFFECTS_BITFLAG & PX5D_SYSEX_SWITCH_CAB );
+	prog.modulation.enable( EFFECTS_BITFLAG & PX5D_SYSEX_SWITCH_MOD );
+	prog.delay.enable( EFFECTS_BITFLAG & PX5D_SYSEX_SWITCH_DELAY );
+	prog.reverb.enable( EFFECTS_BITFLAG & PX5D_SYSEX_SWITCH_REVERB );
+
+	prog.dynamics.setEffect((PresetDynamics::DynamicsTypes)DYN_TYPE);
+	prog.dynamics.setParameter(DYN_VALUE);
+
+	prog.amp.setBass(AMP_BASS);
+	prog.amp.setGain(AMP_GAIN);
+	prog.amp.setMiddle(EQ_MIDDLE);
+	prog.amp.setModel((PresetAmp::AmpTypes)AMP_MODEL);
+	prog.amp.setTreble(AMP_TREBLE);
+	prog.amp.setVolume(AMP_VOLUME); // presnece ??
+
+	prog.cabinet.setCabinet((PresetCabinet::CabTypes)CAB_MODEL);
+	prog.cabinet.setParameter(EQ_PRESENCE);
+
+	prog.modulation.setModulation((PresetModulation::ModulationTypes)MOD_TYPE);
+	prog.modulation.setParameter(MOD_VALUE);
+
+	prog.delay.setDelay((PresetDelay::DelayTypes)DELAY_TYPE);
+	prog.delay.setParameter1(DELAY_FX);
+	prog.delay.setParameter2(DELAY_TIME);
+
+	prog.reverb.setReverb((PresetReverb::ReverbTypes)REVERB_TYPE);
+	prog.reverb.setParameter(REVERB_LEVEL);
+
+	prog.noiseReduction.setParameter(NOISE_REDUCTION);
+
+
+}
+
+void Px5dController::decodeMidiDump(std::vector< unsigned char > *message) {
+
+	if ( ! (message->at(0)==0xf0 &&
+			message->at(1)==0x42 &&
+			message->at(2)==0x30 &&
+			message->at(3)==0x73 &&
+			message->at(4)==0x20 &&
+			message->at(5)==0x50 &&
+			message->at(6)==0x00) ) {
+#ifdef DEBUG
+		std::cout << "MIDI DUMP SEEMS INVALID!!!  " << std::endl ;
+#endif
+	}
+	else {
+#ifdef DEBUG
+		std::cout << "MIDI DUMP HEADER OK" << std::endl ;
+#endif
+		unsigned int programCount = 100;
+
+		// Copy source block skipping the empty 8th bytes
+		// TODO: check if padding also applies after programs
+		unsigned int idx = 7;
+		std::vector<unsigned char> sysex;
+		while ( message->at(idx) != 0xf7 ) {
+			for ( unsigned j=0; j<7; j++ ) {
+				sysex.push_back( message->at(idx++) );
+				if (message->at(idx)==0xf7) break;
+			}
+			if (message->at(idx)==0xf7) break;
+			idx++;
+		}
+
+		m_userPresets.clear();
+		unsigned int bc = 0;
+		for ( unsigned int p=0; p<programCount; p++ ) {
+			PandoraPreset prog;
+			prog.number = p;
+			decodeProgramBin(sysex, bc, prog);
+			bc += 26;
+#ifdef DEBUG
+			std::cout << "Program #" << dec << p << " found name: " << prog.name.getAsciiName() << std::endl ;
+#endif
+			m_userPresets.push_back(prog);
+
+		}
+	}
+
+	// dump user presets
+	for ( unsigned int i=0; i<m_userPresets.size(); ++i) {
+		m_userPresets[i].print();
+	}
+
+
+}
 
 /*
  * Sent from editor:

@@ -20,6 +20,8 @@
 
 #include <QMainWindow>
 #include <QMutex>
+#include <QModelIndex>
+#include <QListWidgetItem>
 #include "aboutdialog.h"
 #include "px5dbridge.h"
 
@@ -99,6 +101,12 @@ private slots:
 	void on_reverbBox_toggled(bool arg1);
 
 	void on_programName_textEdited(const QString &arg1);
+
+	void on_actionRequest_Full_Dump_triggered();
+
+	void on_programList_itemClicked(QListWidgetItem *item);
+
+	void on_programListFactory_itemClicked(QListWidgetItem *item);
 
 private:
 	Ui::MainWindow *ui;

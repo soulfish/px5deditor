@@ -33,6 +33,7 @@ public:
 	bool initialize(QObject *parent);
 
 	virtual void update(PandoraObservable* o, PandoraUpdatedSignal bitflag, PandoraPreset &p);
+	virtual void update(PandoraObservable* o, PandoraUpdatedSignal bitflag);
 
 private:
 	Px5dController *m_px5dController;

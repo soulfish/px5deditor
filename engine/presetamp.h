@@ -93,10 +93,10 @@ public:
 
 	unsigned int getMinParam(AmpTypes m, ParamTypes p);
 	unsigned int getMaxParam(AmpTypes m, ParamTypes p);
-	const char* getParamName(AmpTypes m, ParamTypes p);
+	const char* getParamName(AmpTypes m, ParamTypes p) const;
 
 	// FIXME: strip AmpTypes from all these functions, use model!
-	const char* getParamName(ParamTypes p);
+	const char* getParamName(ParamTypes p) const;
 
 	const char* getParamStringValue(ParamTypes p, unsigned int v);
 	const char* getParamStringValue(AmpTypes m, ParamTypes p, unsigned int v);
@@ -108,6 +108,8 @@ public:
 		string description;
 	};
 	static const AmpDef Amps[END];
+
+	std::string toString() const;
 
 private:
 

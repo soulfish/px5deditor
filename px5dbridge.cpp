@@ -42,6 +42,11 @@ Px5dController *PX5DBridge::controller() {
 	return m_px5dController;
 }
 
+void PX5DBridge::update(PandoraObservable* o, PandoraUpdatedSignal bitflag) {
+	PandoraPreset dummy;
+	update(o, bitflag, dummy);
+}
+
 void PX5DBridge::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, PandoraPreset &p) {
 
 	QEvent* ev = 0;
@@ -54,9 +59,21 @@ void PX5DBridge::update(PandoraObservable* o, PandoraUpdatedSignal bitflag, Pand
 		//TODO
 	}
 
+	if ( bitflag==PX5D_UPDATE_MIDIDUMP ) {
+		qDebug() << " got midi dump for a program (100 in a batch normally) ";
+
+		// For now we only transmit program number and program name
+		ev = new PX5DMidiDumpEvent( p.number, QString(p.name.getAsciiName().c_str()) );
+		QApplication::postEvent(m_parent, ev);
+	}
+	if ( bitflag==PX5D_UPDATE_MIDIDUMP_COMPLETE ) {
+		ev = new PX5DProcessCompleteEvent();
+		QApplication::postEvent(m_parent, ev);
+		return;
+	}
+
 	if ( bitflag==PX5D_UPDATE_ALL ) {
 		qDebug() << " got program update call ";
-
 		ev = new PX5DProgramEvent( p.number, QString(p.name.getAsciiName().c_str()), p.slot );
 		QApplication::postEvent(m_parent, ev);
 	}

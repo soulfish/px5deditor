@@ -78,14 +78,16 @@ public:
 
 	void enable(bool flag) { on = flag; }
 
-	const char* getParam1Name();
-	const char* getParam2Name();
+	const char* getParam1Name() const;
+	const char* getParam2Name() const;
 
 	unsigned int getMinParam1();
 	unsigned int getMaxParam1();
 
 	unsigned int getMinParam2();
 	unsigned int getMaxParam2();
+
+	std::string toString() const;
 
 private:
 	DelayTypes type;

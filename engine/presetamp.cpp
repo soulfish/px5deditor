@@ -17,6 +17,7 @@
 */
 
 #include "presetamp.h"
+#include <sstream>
 
 // NOTE: on day we could transform this and other tables to an XML file
 #define SIZEOF_ARRAY( a ) (sizeof( a ) / sizeof( a[ 0 ] ))
@@ -284,11 +285,11 @@ unsigned int PresetAmp::getMaxParam(AmpTypes m, ParamTypes p) {
 
 }
 
-const char* PresetAmp::getParamName(ParamTypes p) {
+const char* PresetAmp::getParamName(ParamTypes p) const {
 	return getParamName(model, p);
 }
 
-const char* PresetAmp::getParamName(AmpTypes m, ParamTypes p) {
+const char* PresetAmp::getParamName(AmpTypes m, ParamTypes p) const {
 	// Amp has 5 parameters
 	switch (m) {
 	case BTQCLN:
@@ -473,9 +474,20 @@ const char* PresetAmp::getParamStringValue(AmpTypes m, ParamTypes p, unsigned in
 
 	}
 
-
-
-
 }
+
+std::string PresetAmp::toString() const {
+
+	std::stringstream ss;
+	ss << (on?"ON":"OFF") << " FX=" << Amps[model].fullName << ", " ;
+
+	ss << getParamName(model, AMP_GAIN) << "= " << gain << ", ";
+	ss << getParamName(model, AMP_BASS) << "= " << bass << ", ";
+	ss << getParamName(model, AMP_TREBLE) << "= " << treble << ", ";
+	ss << getParamName(model, AMP_VOLUME) << "= " << volume << ", ";
+	ss << getParamName(model, AMP_MIDDLE) << "= " << middle;
+	return ss.str();
+
+};
 
 

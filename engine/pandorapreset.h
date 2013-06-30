@@ -34,9 +34,17 @@ using namespace std;
 class PandoraPreset
 {
 public:
+	enum ProgramBank {
+		PROGRAM_FACTORY,
+		PROGRAM_USER
+	};
+
 	PandoraPreset();
 	PandoraPreset(const PandoraPreset& orig);
 	virtual ~PandoraPreset();
+
+	ProgramBank slot;
+	unsigned int number;
 
 	PresetDynamics dynamics;
 	PresetAmp amp;
@@ -47,13 +55,7 @@ public:
 	PresetReverb reverb;
 	PresetName name;
 
-	enum ProgramBank {
-		PROGRAM_FACTORY,
-		PROGRAM_USER
-	};
-
-	unsigned int number;
-	ProgramBank slot;
+	void print(const std::string& msg="") const;
 
 private:
 };

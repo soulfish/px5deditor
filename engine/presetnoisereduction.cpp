@@ -17,6 +17,7 @@
 */
 
 #include "presetnoisereduction.h"
+#include <sstream>
 
 #define SIZEOF_ARRAY( a ) (sizeof( a ) / sizeof( a[ 0 ] ))
 
@@ -61,7 +62,7 @@ bool PresetNoiseReduction::setParameter(unsigned int p) {
 	return noiseReductionLevel==p;
 }
 
-const char* PresetNoiseReduction::getParamName() {
+const char* PresetNoiseReduction::getParamName() const {
 	return "NR Level";
 }
 
@@ -71,4 +72,11 @@ unsigned int PresetNoiseReduction::getMinParam() {
 
 unsigned int PresetNoiseReduction::getMaxParam() {
 	return 0x1e;
+}
+
+std::string PresetNoiseReduction::toString() const {
+	std::stringstream ss;
+	ss << ((noiseReductionLevel>0)?"ON":"OFF") << ", " ;
+	ss << getParamName() << "= " << noiseReductionLevel;
+	return ss.str();
 }

@@ -18,6 +18,7 @@
 
 #include "pandorapreset.h"
 #include <string>
+#include <iostream>
 
 PandoraPreset::PandoraPreset()
 {
@@ -27,8 +28,36 @@ PandoraPreset::PandoraPreset()
 
 PandoraPreset::PandoraPreset(const PandoraPreset& orig) {
 
+	slot = orig.slot;
+	number = orig.number;
+	name = orig.name;
+
+	dynamics = orig.dynamics;
+	amp = orig.amp;
+	cabinet = orig.cabinet;
+	delay = orig.delay;
+	modulation = orig.modulation;
+	noiseReduction = orig.noiseReduction;
+	reverb = orig.reverb;
 }
 
 PandoraPreset::~PandoraPreset() {
 
+}
+
+void PandoraPreset::print(const std::string& msg) const {
+
+	if ( msg.size() != 0 ) {
+		std::cout << msg << std::endl;
+	}
+
+	std::cout << "\t" << "Program #" << number << " (" << ((slot==PROGRAM_FACTORY)?"P":"U") << ") - '" << name.toString() << " '" << std::endl;
+
+	std::cout << "\t\t Dynamics   : " << dynamics.toString() << std::endl;
+	std::cout << "\t\t Amp        : " << amp.toString() << std::endl;
+	std::cout << "\t\t Cabinet    : " << cabinet.toString() << std::endl;
+	std::cout << "\t\t Modulation : " << modulation.toString() << std::endl;
+	std::cout << "\t\t Delay      : " << delay.toString() << std::endl;
+	std::cout << "\t\t Reverb     : " << reverb.toString() << std::endl;
+	std::cout << "\t\t NoiseReduc : " << noiseReduction.toString() << std::endl;
 }

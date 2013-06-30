@@ -19,6 +19,7 @@
 #include "presetdelay.h"
 
 #include <stdio.h>
+#include <sstream>
 
 #define SIZEOF_ARRAY( a ) (sizeof( a ) / sizeof( a[ 0 ] ))
 
@@ -158,11 +159,11 @@ const char* PresetDelay::getParam2StringValue(unsigned int v) {
 	return delayString;
 }
 
-const char* PresetDelay::getParam1Name() {
+const char* PresetDelay::getParam1Name() const {
 	return "Effect Level";
 }
 
-const char* PresetDelay::getParam2Name() {
+const char* PresetDelay::getParam2Name() const {
 	return "Time";
 }
 
@@ -210,3 +211,12 @@ bool PresetDelay::setParameter2(unsigned int p) {
 	timeMS = validateParameter(2, p);
 	return timeMS==p;
 }
+
+std::string PresetDelay::toString() const {
+	std::stringstream ss;
+	ss << (on?"ON":"OFF") << " FX=" << Delays[type].fullName << ", " ;
+	ss << getParam1Name() << "= " << fxLevel << ", ";
+	ss << getParam2Name() << "= " << timeMS << "";
+	return ss.str();
+}
+

@@ -41,6 +41,8 @@ const QEvent::Type PX5DDelayEventType = static_cast<QEvent::Type>(QEvent::User +
 const QEvent::Type PX5DReverbEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_REVERB);
 const QEvent::Type PX5DNoiseReductionEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_NOISE);
 const QEvent::Type PX5DNameChangeEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MODULE_NAME);
+const QEvent::Type PX5DMidiDumpEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MIDI_DUMP_COMPLETE);
+const QEvent::Type PX5DProcessCompleteEventType = static_cast<QEvent::Type>(QEvent::User + PX5D_MIDI_PROCESS_COMPLETE);
 
 /*
  * Event for propagating a program change event
@@ -351,6 +353,39 @@ public:
 protected:
 	QString m_name;
 };
+
+
+/*
+ * Event for propagating a midi dump event
+ */
+class PX5DMidiDumpEvent : public QEvent {
+public:
+
+	PX5DMidiDumpEvent(const unsigned int programNumber, const QString& programName) :
+		QEvent(static_cast<QEvent::Type>(QEvent::User + PX5D_MIDI_DUMP_COMPLETE)), m_number(programNumber), m_name(programName) {}
+
+	QString getName() const { return m_name; }
+	unsigned int getNumber() const { return m_number; }
+
+protected:
+	unsigned int m_number;
+	QString m_name;
+};
+
+
+/*
+ * Event for propagating an end of process event
+ * FIXME: add event type ?
+ */
+class PX5DProcessCompleteEvent : public QEvent {
+public:
+
+	PX5DProcessCompleteEvent() :
+		QEvent(static_cast<QEvent::Type>(QEvent::User + PX5D_MIDI_PROCESS_COMPLETE)) {}
+
+protected:
+};
+
 
 
 #endif // EVENTS_H

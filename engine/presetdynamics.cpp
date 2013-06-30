@@ -18,6 +18,8 @@
 
 #include "presetdynamics.h"
 
+#include <sstream>
+
 #define SIZEOF_ARRAY( a ) (sizeof( a ) / sizeof( a[ 0 ] ))
 
 const char* PresetDynamics::commonValues[] = {
@@ -71,7 +73,7 @@ PresetDynamics::PresetDynamics() {
 	parameter = 0;
 }
 
-const char* PresetDynamics::getParamName() {
+const char* PresetDynamics::getParamName() const {
 	return Effects[effect].parameterName.c_str();
 }
 
@@ -156,3 +158,11 @@ unsigned int PresetDynamics::validateParameter(unsigned int value) {
 		return value;
 	}
 }
+
+std::string PresetDynamics::toString() const {
+	std::stringstream ss;
+	ss << (on?"ON":"OFF") << " FX=" << Effects[effect].fullName << ", " ;
+	ss << getParamName() << "= " << parameter;
+	return ss.str();
+}
+

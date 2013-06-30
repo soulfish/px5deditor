@@ -72,3 +72,7 @@ char PresetName::maxNameAsciiChar() {
 	return '^';
 }
 
+std::string PresetName::toString() const {
+	return m_name;
+}
+

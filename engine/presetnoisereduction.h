@@ -18,6 +18,8 @@
 #ifndef PRESETNOISEREDUCTION_H
 #define PRESETNOISEREDUCTION_H
 
+#include <string>
+
 class PresetNoiseReduction
 {
 public:
@@ -28,9 +30,11 @@ public:
 	bool getEnabled() { return noiseReductionLevel>0; }
 	bool setParameter(unsigned int p);
 
-	const char* getParamName();
+	const char* getParamName() const;
 	unsigned int getMinParam();
 	unsigned int getMaxParam();
+
+	std::string toString() const;
 
 private:
 	unsigned int noiseReductionLevel;

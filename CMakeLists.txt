@@ -31,7 +31,7 @@ set (CMAKE_CXX_FLAGS_RELEASE "-O2 -DQT_NO_DEBUG -DNDEBUG")
 
 # Set current version
 set (VERSION_MAJOR "0")
-set (VERSION_MINOR "1")
+set (VERSION_MINOR "2")
 set (VERSION_PATCH "0")
 set (VERSION_SUFFIX "")
 set (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
@@ -64,6 +64,7 @@ set( PX5DE_SRCS
   ./engine/presetdelay.cpp
   ./engine/presetname.cpp
   ./engine/presetnoisereduction.cpp
+  ./engine/presetreader.cpp
 )
 
 # QT and UI stuff

@@ -61,7 +61,7 @@ public:
 
 	void setProgramName(const char* name, unsigned int size);
 
-	void SaveCurrentProgramToSlot(unsigned int slot);
+	void saveCurrentProgramToSlot(unsigned int slot);
 
 	unsigned int maxProgramNameSize();
 	char minProgramNameChar();
@@ -94,10 +94,16 @@ private:
 	tState m_pandoraMidiState;
 
 	PandoraPreset m_currentPreset;
+	std::vector<PandoraPreset> m_userPresets;
+	std::vector<PandoraPreset> m_programPreset;
 
 	void fillPandoraSysexHeader(std::vector< unsigned char > *message );
 
 	void sendSysex(std::vector< unsigned char > *message, std::string debug );
+
+	void decodeMidiDump(std::vector< unsigned char > *message);
+
+	void decodeProgramBin(std::vector< unsigned char > &sysex, unsigned int bc, PandoraPreset &prog);
 
 	// These enums define the offset of the different
 	// values inside the sysex program chunk sent by the pandora.

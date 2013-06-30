@@ -31,6 +31,7 @@ class PandoraObserver
 public:
 	PandoraObserver();
 	virtual void update(PandoraObservable* o, PandoraUpdatedSignal bitflag, PandoraPreset &p) = 0;
+	virtual void update(PandoraObservable* o, PandoraUpdatedSignal bitflag) = 0;
 	virtual ~PandoraObserver() {}
 };
 

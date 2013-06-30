@@ -22,6 +22,8 @@ public:
 	static char minNameAsciiChar();
 	static char maxNameAsciiChar();
 
+	std::string toString() const;
+
 private:
 	std::string m_name;
 };

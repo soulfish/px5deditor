@@ -65,6 +65,16 @@ public:
 		}
    }
 
+   // Event notification
+   virtual void notifyObservers(PandoraUpdatedSignal bitflag) {
+	  if(!hasChanged()) return;
+		clearChanged();
+		std::set<PandoraObserver*>::iterator it;
+		for(it = observers.begin();it != observers.end(); it++) {
+			(*it)->update(this, bitflag);
+		}
+   }
+
    virtual ~PandoraObservable() {}
 };
 

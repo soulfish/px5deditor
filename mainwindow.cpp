@@ -32,6 +32,8 @@
 #include "regexpucvalidator.h"
 #include <sys/utsname.h>
 
+#include "engine/presetreader.h"
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
@@ -41,6 +43,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 
 	setWindowTitle(QString("Pandora PX5D Editor for Linux - ") + PGM_VERSION);
+
+#if defined (NDEBUG)
+	// Remove debug menu in release build
+	ui->menuBar->clear();
+	ui->menuBar->addMenu(ui->menuFile);
+	ui->menuBar->addMenu(ui->menuHelp);
+#endif
 
 	// Fill combo box elements
 	for ( int i=PresetDynamics::COMPRESSOR; i<PresetDynamics::END; ++i ) {
@@ -107,11 +116,26 @@ MainWindow::MainWindow(QWidget *parent) :
 	// disable scroll wheel on program number
 	ui->programNumber->installEventFilter(this);
 
+	// Setup the programList
+	ui->programList->setEnabled(true);
+
+	// Setup the Factory Programs list
+	ui->programListFactory->setEnabled(true);
+	PresetReader pr;
+	//QString presetFile("/home/frederic/Dev/Pandora/px5deditor/data/PX5D Preset Program.px5p");
+	QString presetFile(":/px5de/data/PX5D Preset Program.px5p");
+	pr.readPreset(presetFile);
+	for ( int i=0; i<pr.presetCount(); ++i ) {
+		new QListWidgetItem( QString(pr.getPreset(i).name.getAsciiName().c_str()
+									 ) , ui->programListFactory);
+	}
+
 }
 
 MainWindow::~MainWindow() {
 	delete ui;
 }
+
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
 	if(event->type() == QEvent::Wheel && obj == ui->programNumber) {
@@ -120,11 +144,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
 	return false;
 }
 
-void MainWindow::on_connectToPandora_released()
-{
+void MainWindow::on_connectToPandora_released() {
 	if ( bridge.initialize(this) ) {
 		ui->px5dStatusIn->setText( QString(bridge.controller()->pandoraInPortName().c_str()) );
 		ui->px5dStatusOut->setText( QString(bridge.controller()->pandoraOutPortName().c_str()) );
+
+		// Handle hand of process
+		ui->programList->clear();
+		bridge.controller()->requestFullDump();
+
+		//FIXME: make an event bubble when pandora is ready & grab user programs automatically
+		//TODO: have a "dump done event", on event request CurrentProgram & its data
 
 	} else {
 
@@ -148,6 +178,11 @@ void MainWindow::on_connectToPandora_released()
 
 void MainWindow::on_programNumber_valueChanged(int v) {
 	bridge.controller()->setProgramNumber(v, ui->programBankFactory->isChecked()?PandoraPreset::PROGRAM_FACTORY : PandoraPreset::PROGRAM_USER);
+
+	if (v>=0 && v<=ui->programList->count() ) {
+		ui->programList->setCurrentRow(v);
+	}
+	//TODO: fix usability, handle factory/user
 }
 
 
@@ -262,7 +297,7 @@ void MainWindow::on_writeProgram_released() {
 
 		switch (ret) {
 		case QMessageBox::Save:
-			bridge.controller()->SaveCurrentProgramToSlot( ui->programNumber->value() );
+			bridge.controller()->saveCurrentProgramToSlot( ui->programNumber->value() );
 			break;
 		case QMessageBox::Cancel:
 			break;
@@ -281,7 +316,7 @@ void MainWindow::on_writeProgram_released() {
 
 		switch (ret) {
 		case QMessageBox::Save:
-			bridge.controller()->SaveCurrentProgramToSlot( ui->programNumber->value() );
+			bridge.controller()->saveCurrentProgramToSlot( ui->programNumber->value() );
 			break;
 		case QMessageBox::Cancel:
 			break;
@@ -406,13 +441,19 @@ void MainWindow::customEvent( QEvent *event )
 	if ( event->type() == PX5DProgramEventType ) {
 		PX5DProgramEvent *ev = static_cast<PX5DProgramEvent*>(event);
 		ui->programName->setText( ev->getProgramName() );
-		ui->programNumber->setValue( ev->getProgramNumber() );
+
+		//FIXME: le setValue va déclencher un message en retour vers le pandora!!
+
 		if ( ev->getSlot()==PandoraPreset::PROGRAM_FACTORY ) {
 			ui->programBankFactory->setChecked(true);
+			ui->tabWidget->setCurrentIndex(1);
 		}
 		else if ( ev->getSlot()==PandoraPreset::PROGRAM_USER ) {
 			ui->programBankUser->setChecked(true);
+			ui->tabWidget->setCurrentIndex(0);
 		}
+		ui->programNumber->setValue( ev->getProgramNumber() );
+
 	}
 
 	else if ( event->type() == PX5DDynamicsEventType ) {
@@ -619,6 +660,26 @@ void MainWindow::customEvent( QEvent *event )
 		ui->noiseReductionParamDial->setValue( ev->getParameter() );
 	}
 
+	else if ( event->type() == PX5DMidiDumpEventType ) {
+
+		PX5DMidiDumpEvent *ev = static_cast<PX5DMidiDumpEvent*>(event);
+
+		qDebug() << "Got Midi Dump Event Program " << ev->getName() << " " << ev->getNumber();
+
+		QListWidgetItem *wi = new QListWidgetItem(ev->getName(), ui->programList);
+
+		//TODO: hande user / factory
+		if ( ui->programNumber->value()==ev->getNumber() ) {
+			ui->programList->setCurrentItem(wi);
+		}
+	}
+	else if ( event->type() == PX5DProcessCompleteEventType )  {
+
+		bridge.controller()->requestCurrentProgram();
+		bridge.controller()->requestCurrentProgramData();
+
+	}
+
 	else if ( event->type() == PX5DNameChangeEventType ) {
 
 		PX5DNameChangeEvent *ev = static_cast<PX5DNameChangeEvent*>(event);
@@ -636,5 +697,26 @@ void MainWindow::on_programName_textEdited(const QString &name) {
 	// called when field changed by user input only
 	qDebug() << "Program name changed: " << name;
 
-	bridge.controller()->setProgramName(name.toAscii().data(), name.toAscii().size() );
+//	bridge.controller()->setProgramName(name.toAscii().data(), name.toAscii().size() );
+	bridge.controller()->setProgramName(name.toLatin1().data(), name.toLatin1().size() );
+
+}
+
+void MainWindow::on_actionRequest_Full_Dump_triggered() {
+	qDebug() << "Requesting full pandora dump";
+	bridge.controller()->requestFullDump();
+}
+
+void MainWindow::on_programList_itemClicked(QListWidgetItem *item) {
+	ui->programNumber->setValue( ui->programList->row(item) );
+	if ( !ui->programBankUser->isChecked() ) {
+		bridge.controller()->setProgramNumber( ui->programNumber->value(), PandoraPreset::PROGRAM_USER );
+	}
+}
+
+void MainWindow::on_programListFactory_itemClicked(QListWidgetItem *item) {
+	ui->programNumber->setValue( ui->programListFactory->row(item) );
+	if ( !ui->programBankFactory->isChecked() ) {
+		bridge.controller()->setProgramNumber( ui->programNumber->value(), PandoraPreset::PROGRAM_FACTORY );
+	}
 }

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	Qt::WindowFlags flags = w.windowFlags();
 	flags |= Qt::WindowMinimizeButtonHint;
 	w.setWindowFlags(flags);
-	w.setFixedSize(860,512);
+	w.setFixedSize(955,518);
 	w.show();
 
 	return a.exec();

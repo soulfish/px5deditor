@@ -71,9 +71,11 @@ public:
 	bool setParameter(unsigned int p);
 	void enable(bool flag) { on = flag; }
 
-	const char* getParamName();
+	const char* getParamName() const;
 	unsigned int getMinParam();
 	unsigned int getMaxParam();
+
+	std::string toString() const;
 
 private:
 	CabTypes model;

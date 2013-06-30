@@ -1,7 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <QtGui/QApplication>
+//#include <QtGui/QApplication>
+//#include <QtWidgets/QApplication>
 #include <QtCore/QString>
 
 #define LITERAL(s) #s
