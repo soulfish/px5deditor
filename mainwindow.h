@@ -23,6 +23,7 @@
 #include <QModelIndex>
 #include <QListWidgetItem>
 #include "aboutdialog.h"
+#include "storeprogramdialog.h"
 #include "px5dbridge.h"
 
 namespace Ui {
@@ -36,6 +37,9 @@ class MainWindow : public QMainWindow
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
+	PX5DBridge& getBridge() { return bridge; };
+	unsigned int getCurrentProgramNumber();
+	const QString getUserProgramName(unsigned int i);
 
 private slots:
 	void on_connectToPandora_released();
@@ -108,10 +112,14 @@ private slots:
 
 	void on_programListFactory_itemClicked(QListWidgetItem *item);
 
+
 private:
 	Ui::MainWindow *ui;
 	AboutDialog *m_dlgAbout;
 	AboutDialog* about();
+
+	StoreProgramDialog *m_dlgStore;
+	StoreProgramDialog* store();
 
 	PX5DBridge bridge;
 	void updateParamTextValue(PandoraNotification p, unsigned int v);

@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	m_dlgAbout = 0;
+	m_dlgStore = 0;
 
 	ui->setupUi(this);
 
@@ -50,6 +51,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->menuBar->addMenu(ui->menuFile);
 	ui->menuBar->addMenu(ui->menuHelp);
 #endif
+
+	ui->tabWidgetMain->setCurrentIndex(0);
+	// remove tabs until the device is connected
+	ui->tabWidgetMain->removeTab(2);
+	ui->tabWidgetMain->removeTab(1);
 
 	// Fill combo box elements
 	for ( int i=PresetDynamics::COMPRESSOR; i<PresetDynamics::END; ++i ) {
@@ -284,8 +290,12 @@ void MainWindow::on_noiseReductionParamDial_valueChanged(int v) {
 
 void MainWindow::on_writeProgram_released() {
 
-	//TODO: implement selecting destination program via dedicated dialog
+	store()->exec();
 
+	//TODO: depending on result, could process everything here instead of popup ...
+
+
+	/*
 	if ( ui->programBankFactory->isChecked() ) {
 
 		QMessageBox msgBox;
@@ -325,6 +335,7 @@ void MainWindow::on_writeProgram_released() {
 		}
 
 	}
+	*/
 }
 
 void MainWindow::on_actionQuit_triggered() {
@@ -340,6 +351,13 @@ AboutDialog* MainWindow::about() {
 		m_dlgAbout = new AboutDialog(this);
 	}
 	return m_dlgAbout;
+}
+
+StoreProgramDialog* MainWindow::store() {
+	if (m_dlgStore == 0) {
+		m_dlgStore = new StoreProgramDialog(this);
+	}
+	return m_dlgStore;
 }
 
 void MainWindow::on_dynamicsBox_toggled(bool v) {
@@ -446,11 +464,11 @@ void MainWindow::customEvent( QEvent *event )
 
 		if ( ev->getSlot()==PandoraPreset::PROGRAM_FACTORY ) {
 			ui->programBankFactory->setChecked(true);
-			ui->tabWidget->setCurrentIndex(1);
+			ui->tabWidgetPrograms->setCurrentIndex(1);
 		}
 		else if ( ev->getSlot()==PandoraPreset::PROGRAM_USER ) {
 			ui->programBankUser->setChecked(true);
-			ui->tabWidget->setCurrentIndex(0);
+			ui->tabWidgetPrograms->setCurrentIndex(0);
 		}
 		ui->programNumber->setValue( ev->getProgramNumber() );
 
@@ -675,6 +693,10 @@ void MainWindow::customEvent( QEvent *event )
 	}
 	else if ( event->type() == PX5DProcessCompleteEventType )  {
 
+		//ui->tabWidgetMain->insertTab(1, ui->tabDrums, QString("Drums"));
+		ui->tabWidgetMain->insertTab(1, ui->tabPrograms, QString("Programs"));
+		ui->tabWidgetMain->setCurrentIndex(1);
+
 		bridge.controller()->requestCurrentProgram();
 		bridge.controller()->requestCurrentProgramData();
 
@@ -718,5 +740,18 @@ void MainWindow::on_programListFactory_itemClicked(QListWidgetItem *item) {
 	ui->programNumber->setValue( ui->programListFactory->row(item) );
 	if ( !ui->programBankFactory->isChecked() ) {
 		bridge.controller()->setProgramNumber( ui->programNumber->value(), PandoraPreset::PROGRAM_FACTORY );
+	}
+}
+
+unsigned int MainWindow::getCurrentProgramNumber() {
+	return ui->programNumber->value();
+}
+
+const QString MainWindow::getUserProgramName(unsigned int i) {
+	if ( i<(unsigned int)ui->programList->count() ) {
+		return ui->programList->item(i)->text();
+	} else {
+		qDebug() << "Cannot get user program name at this index!";
+		return QString();
 	}
 }

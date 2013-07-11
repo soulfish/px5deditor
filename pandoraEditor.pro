@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     aboutdialog.cpp \
     px5dbridge.cpp \
     engine/presetname.cpp \
-    engine/presetreader.cpp
+    engine/presetreader.cpp \
+    storeprogramdialog.cpp
 
 HEADERS  += mainwindow.h \
     engine/px5dcontroller.h \
@@ -57,10 +58,12 @@ HEADERS  += mainwindow.h \
     px5dbridge.h \
     engine/presetname.h \
     regexpucvalidator.h \
-    engine/presetreader.h
+    engine/presetreader.h \
+    storeprogramdialog.h
 
 FORMS    += mainwindow.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    storeprogramdialog.ui
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += alsa
