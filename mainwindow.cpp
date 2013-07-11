@@ -155,12 +155,10 @@ void MainWindow::on_connectToPandora_released() {
 		ui->px5dStatusIn->setText( QString(bridge.controller()->pandoraInPortName().c_str()) );
 		ui->px5dStatusOut->setText( QString(bridge.controller()->pandoraOutPortName().c_str()) );
 
-		// Handle hand of process
+		ui->tabDevice->setEnabled(false);
+		ui->connectToPandora->setText( QString("Connecting...") );
 		ui->programList->clear();
 		bridge.controller()->requestFullDump();
-
-		//FIXME: make an event bubble when pandora is ready & grab user programs automatically
-		//TODO: have a "dump done event", on event request CurrentProgram & its data
 
 	} else {
 
@@ -694,6 +692,8 @@ void MainWindow::customEvent( QEvent *event )
 	else if ( event->type() == PX5DProcessCompleteEventType )  {
 
 		//ui->tabWidgetMain->insertTab(1, ui->tabDrums, QString("Drums"));
+		ui->connectToPandora->setText( QString("Connected!") );
+
 		ui->tabWidgetMain->insertTab(1, ui->tabPrograms, QString("Programs"));
 		ui->tabWidgetMain->setCurrentIndex(1);
 

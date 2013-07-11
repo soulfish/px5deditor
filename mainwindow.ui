@@ -39,9 +39,12 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tabDevice">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
