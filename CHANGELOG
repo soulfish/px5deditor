@@ -1,6 +1,9 @@
 
 2018-06-12:
-  * Fixed a few bugs and finaly merge dev into master
+  * Fixed a few bugs and finally merge dev into master, thanks to the users who reported the issues.
+    You can tell this project is not heavily maintained, my Pandora is still working, though
+    replaced by other toys in my sound path. If you really need more features, the Win32
+    version of the KORG editor works fine with WINE now.
 
 2012-10-12:
   * Using a new branching model. master will only get tagged release code, and develop
