@@ -1,4 +1,7 @@
 
+2018-06-12:
+  * Fixed a few bugs and finaly merge dev into master
+
 2012-10-12:
   * Using a new branching model. master will only get tagged release code, and develop
     will contain current development code.

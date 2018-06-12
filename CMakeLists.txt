@@ -50,6 +50,7 @@ set( PX5DE_SRCS
   ./mainwindow.cpp
   ./aboutdialog.cpp
   ./px5dbridge.cpp
+  ./storeprogramdialog.cpp
   ./engine/pandoraobservable.cpp
   ./engine/presetamp.cpp
   ./engine/presetdynamics.cpp
@@ -72,11 +73,13 @@ set( PX5DE_MOC_HDRS
   ./mainwindow.h
   ./aboutdialog.h
   ./regexpucvalidator.h
+  ./storeprogramdialog.h
 )
 # dialogs
 set( PX5DE_UIS
   ./mainwindow.ui
   ./aboutdialog.ui
+  ./storeprogramdialog.ui
 )
 # resources
 set( PX5DE_RCS
@@ -112,7 +115,7 @@ find_package(Threads REQUIRED)
 
 # Px5d editor target
 ADD_EXECUTABLE( px5deditor ${PX5DE_SRCS} ${PX5DE_MOC_SRCS} ${PX5DE_RC_SRC} ${PX5DE_UI_HDRS} )
-TARGET_LINK_LIBRARIES( px5deditor ${QT_LIBRARIES} ${ALSA_LIBRARIES} )
+TARGET_LINK_LIBRARIES( px5deditor ${QT_LIBRARIES} ${ALSA_LIBRARIES} -pthread )
 
 find_package (ALSA REQUIRED)
 if (ALSA_FOUND)
